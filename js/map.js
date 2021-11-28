@@ -115,7 +115,7 @@ function createFeatures(arr) {
   let fragment = document.createDocumentFragment()
   for (let i = 0; i < arr.offer.features.length; i++) {
     let features = document.createElement("li")
-    features.className = "feature feature--" + arr.offer.features[i]
+    features.className = "popup__feature popup__feature--" + arr.offer.features[i]
     fragment.appendChild(features)
   }
   return fragment
