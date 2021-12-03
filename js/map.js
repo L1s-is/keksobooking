@@ -3,8 +3,16 @@
 let map = document.querySelector(".map")
 let template = document.querySelector("template")
 let newTemplate = template.content.querySelector('.map__card');
-let mapPin = document.querySelector(".map__pin")
+let mapCard = template.querySelector(".map__card")
+let mapPin = template.content.querySelector(".map__pin")
+let mapPinMain = document.querySelector(".map__pin--main")
+let mapFilters = document.querySelector(".map__filters")
+let mapFiltersSelects = mapFilters.querySelectorAll("select")
+let mapFeatures = document.querySelector(".map__features")
 let listOfPins = document.querySelector(".map__pins")
+let adFormAnnoucement = document.querySelector(".ad-form")
+let adFormFieldsets = adFormAnnoucement.querySelectorAll("fieldset")
+let addressInput = adFormAnnoucement.querySelector("#address")
 let mapFiltersContainer = map.querySelector(".map__filters-container")
 const pinWidth = 50
 const pinHeight = 70
@@ -107,9 +115,36 @@ function createFragment(arr) {
   listOfPins.appendChild(fragment)
 }
 
-map.classList.remove("map--faded")
+function mapActiveHandler (){
+  map.classList.remove("map--faded")
+  formAnnoucementActiveHandler()
+  formElementActiveHandler(adFormFieldsets)
+  formElementActiveHandler(mapFiltersSelects)
+  createFragment(listObjects)
+  addressInput.value = getAddressFormAnnoucement()
+  /*map.insertBefore(createAnnouncement(listObjects[0]), mapFiltersContainer)*/
+}
 
-createFragment(listObjects)
+function getAddressFormAnnoucement(){
+  let coordinats = mapPinMain.getBoundingClientRect()
+  let coordinatX = Math.round(coordinats.left - pinWidth / 2)
+  let coordinatY = Math.round(coordinats.top + window.pageYOffset - pinHeight)
+  addressInput = coordinatX + ", " + coordinatY
+  return addressInput
+}
+
+function formAnnoucementActiveHandler (){
+  adFormAnnoucement.classList.remove('ad-form--disabled')
+}
+function formElementActiveHandler (disabledArr){
+  for (let i=0; i<disabledArr.length; i++)  {
+    disabledArr[i].disabled = false
+  }
+}
+
+mapPinMain.addEventListener('mouseup', mapActiveHandler)
+
+
 
 function createFeatures(arr) {
   let fragment = document.createDocumentFragment()
@@ -138,4 +173,4 @@ function createAnnouncement(element) {
   return newAnnouncement
 }
 
-map.insertBefore(createAnnouncement(listObjects[0]), mapFiltersContainer)
+
