@@ -4,10 +4,13 @@ let map = document.querySelector(".map")
 let template = document.querySelector("template")
 let newTemplate = template.content.querySelector('.map__card');
 let mapCard = template.querySelector(".map__card")
+let mapCardPopup = map.querySelector(".map__card")
 let mapPin = template.content.querySelector(".map__pin")
+let findCreateMapPins
 let mapPinMain = document.querySelector(".map__pin--main")
 let mapFilters = document.querySelector(".map__filters")
 let mapFiltersSelects = mapFilters.querySelectorAll("select")
+let mapFiltersFieldset = mapFilters.querySelectorAll("fieldset")
 let mapFeatures = document.querySelector(".map__features")
 let listOfPins = document.querySelector(".map__pins")
 let adFormAnnoucement = document.querySelector(".ad-form")
@@ -115,17 +118,7 @@ function createFragment(arr) {
   listOfPins.appendChild(fragment)
 }
 
-function mapActiveHandler (){
-  map.classList.remove("map--faded")
-  formAnnoucementActiveHandler()
-  formElementActiveHandler(adFormFieldsets)
-  formElementActiveHandler(mapFiltersSelects)
-  createFragment(listObjects)
-  addressInput.value = getAddressFormAnnoucement()
-  /*map.insertBefore(createAnnouncement(listObjects[0]), mapFiltersContainer)*/
-}
-
-function getAddressFormAnnoucement(){
+function getAddressFormAnnoucement() {
   let coordinats = mapPinMain.getBoundingClientRect()
   let coordinatX = Math.round(coordinats.left - pinWidth / 2)
   let coordinatY = Math.round(coordinats.top + window.pageYOffset - pinHeight)
@@ -133,18 +126,59 @@ function getAddressFormAnnoucement(){
   return addressInput
 }
 
-function formAnnoucementActiveHandler (){
+function formAnnoucementActiveHandler() {
   adFormAnnoucement.classList.remove('ad-form--disabled')
 }
-function formElementActiveHandler (disabledArr){
-  for (let i=0; i<disabledArr.length; i++)  {
+
+function formElementActiveHandler(disabledArr) {
+  for (let i = 0; i < disabledArr.length; i++) {
     disabledArr[i].disabled = false
   }
 }
 
+function mapActiveHandler() {
+  map.classList.remove("map--faded")
+  formAnnoucementActiveHandler()
+  formElementActiveHandler(adFormFieldsets)
+  formElementActiveHandler(mapFiltersSelects)
+  formElementActiveHandler(mapFiltersFieldset)
+  createFragment(listObjects)
+  addressInput.value = getAddressFormAnnoucement()
+  findCreateMapPins = map.querySelectorAll(".map__pin")
+  console.log(findCreateMapPins)
+  createMapPinAnnoucements()
+  let mapCards = map.querySelectorAll(".map__card")
+  for (let i = 1; i < findCreateMapPins.length; i++) {
+
+    findCreateMapPins[i].addEventListener("click", function () {
+      for (let j = 1; j < findCreateMapPins.length; j++){
+        mapCards[j - 1].classList.add("visually-hidden")
+      }
+      mapCards[i - 1].classList.remove("visually-hidden")
+    })
+    let popupClose = mapCards[i - 1].querySelector(".popup__close")
+    popupClose.addEventListener("click", function () {
+      mapCards[i - 1].classList.add("visually-hidden")
+    })
+    window.addEventListener("keydown", function (evt) {
+      if (evt.keyCode === 27) {
+        mapCards[i - 1].classList.add("visually-hidden")
+      }
+    })
+  }
+}
+
+function createMapPinAnnoucements() {
+  for (let i = 0; i < listObjects.length; i++) {
+    createAnnouncement(listObjects[i])
+  }
+}
+
+function mapPinClickHandler() {
+
+}
+
 mapPinMain.addEventListener('mouseup', mapActiveHandler)
-
-
 
 function createFeatures(arr) {
   let fragment = document.createDocumentFragment()
@@ -170,6 +204,8 @@ function createAnnouncement(element) {
   newAnnouncement.querySelector(".popup__features").appendChild(features)
   newAnnouncement.querySelector(".popup__description").textContent = element.offer.description
   newAnnouncement.querySelector(".popup__photo").src = element.offer.photos
+  newAnnouncement.classList.add("visually-hidden")
+  map.insertBefore(newAnnouncement, mapFiltersContainer)
   return newAnnouncement
 }
 
