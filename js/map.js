@@ -171,29 +171,31 @@ function createMapPinAnnoucements() {
   }
 }
 
-function PopupVisibleHandler(element) {
-  element.classList.remove("visually-hidden")
+function PopupActiveHandler(annoucement, mapPin) {
+  annoucement.classList.remove("visually-hidden")
+  mapPin.classList.add("map__pin--active")
 }
 
-function PopupHiddenHandler(element) {
-  element.classList.add("visually-hidden")
+function PopupInactiveHandler(annoucement, mapPin) {
+  annoucement.classList.add("visually-hidden")
+  mapPin.classList.remove("map__pin--active")
 }
 
 function mapPinClickHandler(mapCards) {
   for (let i = 1; i < findCreateMapPins.length; i++) {
     findCreateMapPins[i].addEventListener("click", function () {
       for (let j = 1; j < findCreateMapPins.length; j++) {
-        PopupHiddenHandler(mapCards[j - 1]) /*Наверно можно заменить на функцию с аргументом mapCards[j - 1]*/
+        PopupInactiveHandler(mapCards[j - 1], findCreateMapPins[j])
       }
-      PopupVisibleHandler(mapCards[i - 1])
+      PopupActiveHandler(mapCards[i - 1], findCreateMapPins[i])
     })
     let popupClose = mapCards[i - 1].querySelector(".popup__close")
     popupClose.addEventListener("click", function () {
-      PopupHiddenHandler(mapCards[i - 1])
+      PopupInactiveHandler(mapCards[i - 1], findCreateMapPins[i])
     })
     window.addEventListener("keydown", function (evt) {
       if (evt.keyCode === 27) {
-        PopupHiddenHandler(mapCards[i - 1])
+        PopupInactiveHandler(mapCards[i - 1], findCreateMapPins[i])
       }
     })
   }
