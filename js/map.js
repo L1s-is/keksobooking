@@ -18,6 +18,7 @@ let adFormFieldsets = adFormAnnoucement.querySelectorAll("fieldset")
 let addressInput = adFormAnnoucement.querySelector("#address")
 let adFormTitle = adFormAnnoucement.querySelector("#title")
 let adFormPrice = adFormAnnoucement.querySelector("#price")
+let adFormType = adFormAnnoucement.querySelector("#type")
 let mapFiltersContainer = map.querySelector(".map__filters-container")
 const pinWidth = 50
 const pinHeight = 70
@@ -32,13 +33,18 @@ const listCheckinsCheckouts = ["12:00", "13:00", "14:00"]
 const listOfFeatures = ["wifi", "dishwasher", "parking", "washer", "elevator", "conditioner"]
 const listOfPhotos = ["https://o0.github.io/assets/images/tokyo/hotel1.jpg", "https://o0.github.io/assets/images/tokyo/hotel2.jpg", "https://o0.github.io/assets/images/tokyo/hotel3.jpg"]
 let listObjects = createArrayOfObjects(listOfAvatars, listOfTitles, listOfTypes, listCheckinsCheckouts, listOfFeatures, listOfPhotos)
-let valueTypes = {
+const valueTypes = {
   palace: 'Дворец',
   flat: 'Квартира',
   house: 'Дом',
   bungalo: 'Бунгало'
 }
-
+const priceTypes = {
+  palace: '10000',
+  flat: '1000',
+  house: '5000',
+  bungalo: '100'
+}
 function getRandomIntegerInRange(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
@@ -239,18 +245,32 @@ function errorValidHandler(formElement) {
   }
 }
 
-adFormTitle.addEventListener("input", function (evt) {
+adFormTitle.addEventListener("input", function () {
   adFormTitle.setCustomValidity("")
   adFormTitle.checkValidity()
 })
-adFormTitle.addEventListener("invalid", function (evt) {
+adFormTitle.addEventListener("invalid", function () {
   errorValidHandler(adFormTitle)
 })
 
-adFormPrice.addEventListener("input", function (evt) {
+adFormType.addEventListener("input", function () {
+  if(adFormType.value === "bungalo"){
+    adFormPrice.min = priceTypes.bungalo
+  }else if(adFormType.value === "flat"){
+    adFormPrice.min = priceTypes.flat
+  }else if(adFormType.value === "house"){
+    adFormPrice.min = priceTypes.house
+  }else {
+    adFormPrice.min = priceTypes.palace
+  }
+})
+
+adFormPrice.addEventListener("input", function () {
   adFormPrice.setCustomValidity("")
   adFormPrice.checkValidity()
+
 })
-adFormPrice.addEventListener("invalid", function (evt) {
+adFormPrice.addEventListener("invalid", function () {
   errorValidHandler(adFormPrice)
 })
+
