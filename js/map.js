@@ -16,6 +16,8 @@ let listOfPins = document.querySelector(".map__pins")
 let adFormAnnoucement = document.querySelector(".ad-form")
 let adFormFieldsets = adFormAnnoucement.querySelectorAll("fieldset")
 let addressInput = adFormAnnoucement.querySelector("#address")
+let adFormTitle = adFormAnnoucement.querySelector("#title")
+let adFormPrice = adFormAnnoucement.querySelector("#price")
 let mapFiltersContainer = map.querySelector(".map__filters-container")
 const pinWidth = 50
 const pinHeight = 70
@@ -223,4 +225,32 @@ function mapActiveHandler() {
 
 mapPinMain.addEventListener('mouseup', mapActiveHandler)
 
+function errorValidHandler(formElement) {
+  if (formElement.validity.valueMissing) {
+    formElement.setCustomValidity("Пожалуйста, заполните поле")
+  } else if (formElement.validity.tooShort) {
+    formElement.setCustomValidity("Поле может содержать не менее " + formElement.minLength + " символов. Введено " + formElement.value.length + " символов.")
+  } else if (formElement.validity.tooLong) {
+    formElement.setCustomValidity("Поле может содержать не более " + formElement.maxLength + " символов. Введено " + formElement.value.length + " символов.")
+  } else if (formElement.validity.rangeUnderflow) {
+    formElement.setCustomValidity("Для выбранного типа жилья минимальная сумма оплаты за ночь не может быть менее " + formElement.min + " рублей.")
+  } else if (formElement.validity.rangeOverflow) {
+    formElement.setCustomValidity("Максимальная сумма оплаты за ночь не может быть выше " + formElement.max + " рублей.")
+  }
+}
 
+adFormTitle.addEventListener("input", function (evt) {
+  adFormTitle.setCustomValidity("")
+  adFormTitle.checkValidity()
+})
+adFormTitle.addEventListener("invalid", function (evt) {
+  errorValidHandler(adFormTitle)
+})
+
+adFormPrice.addEventListener("input", function (evt) {
+  adFormPrice.setCustomValidity("")
+  adFormPrice.checkValidity()
+})
+adFormPrice.addEventListener("invalid", function (evt) {
+  errorValidHandler(adFormPrice)
+})
