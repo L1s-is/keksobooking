@@ -242,6 +242,8 @@ function errorValidHandler(formElement) {
     formElement.setCustomValidity("Для выбранного типа жилья минимальная сумма оплаты за ночь не может быть менее " + formElement.min + " рублей.")
   } else if (formElement.validity.rangeOverflow) {
     formElement.setCustomValidity("Максимальная сумма оплаты за ночь не может быть выше " + formElement.max + " рублей.")
+  } else {
+    formElement.setCustomValidity("")
   }
 }
 
@@ -253,22 +255,36 @@ adFormTitle.addEventListener("invalid", function () {
   errorValidHandler(adFormTitle)
 })
 
+function minPriceValueHandler(adFormType, adFormPrice){
+  switch (adFormType.value){
+    case "bungalo":
+      adFormPrice.min = priceTypes.bungalo
+      break
+    case "flat":
+      adFormPrice.min = priceTypes.flat
+      break
+    case "house":
+      adFormPrice.min = priceTypes.house
+      break
+    case "palace":
+      adFormPrice.min = priceTypes.palace
+      break
+    default:
+      adFormPrice.min = "0"
+  }
+}
+
+minPriceValueHandler(adFormType, adFormPrice)
 adFormType.addEventListener("input", function () {
-  if(adFormType.value === "bungalo"){
-    adFormPrice.min = priceTypes.bungalo
-  }else if(adFormType.value === "flat"){
-    adFormPrice.min = priceTypes.flat
-  }else if(adFormType.value === "house"){
-    adFormPrice.min = priceTypes.house
-  }else {
-    adFormPrice.min = priceTypes.palace
+  minPriceValueHandler(adFormType, adFormPrice)
+  if (!adFormPrice.validity.valid){
+    errorValidHandler(adFormPrice)
   }
 })
 
 adFormPrice.addEventListener("input", function () {
   adFormPrice.setCustomValidity("")
   adFormPrice.checkValidity()
-
 })
 adFormPrice.addEventListener("invalid", function () {
   errorValidHandler(adFormPrice)
