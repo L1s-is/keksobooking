@@ -259,18 +259,23 @@ function minPriceValueHandler(adFormType, adFormPrice){
   switch (adFormType.value){
     case "bungalo":
       adFormPrice.min = priceTypes.bungalo
+      adFormPrice.placeholder = priceTypes.bungalo
       break
     case "flat":
       adFormPrice.min = priceTypes.flat
+      adFormPrice.placeholder = priceTypes.flat
       break
     case "house":
       adFormPrice.min = priceTypes.house
+      adFormPrice.placeholder = priceTypes.house
       break
     case "palace":
       adFormPrice.min = priceTypes.palace
+      adFormPrice.placeholder = priceTypes.palace
       break
     default:
       adFormPrice.min = "0"
+      adFormPrice.placeholder = "0"
   }
 }
 
