@@ -45,6 +45,7 @@ const priceTypes = {
   house: '5000',
   bungalo: '100'
 }
+
 function getRandomIntegerInRange(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
@@ -232,6 +233,7 @@ function mapActiveHandler() {
 mapPinMain.addEventListener('mouseup', mapActiveHandler)
 
 function errorValidHandler(formElement) {
+  formElement.classList.add("ad-form__element--error")
   if (formElement.validity.valueMissing) {
     formElement.setCustomValidity("Пожалуйста, заполните поле")
   } else if (formElement.validity.tooShort) {
@@ -244,19 +246,53 @@ function errorValidHandler(formElement) {
     formElement.setCustomValidity("Максимальная сумма оплаты за ночь не может быть выше " + formElement.max + " рублей.")
   } else {
     formElement.setCustomValidity("")
+    formElement.classList.remove("ad-form__element--error")
   }
 }
 
-adFormTitle.addEventListener("input", function () {
-  adFormTitle.setCustomValidity("")
-  adFormTitle.checkValidity()
-})
-adFormTitle.addEventListener("invalid", function () {
-  errorValidHandler(adFormTitle)
+let submitButton = adFormAnnoucement.querySelector(".ad-form__submit")
+
+function submitButtonClickHandler(formElement) {
+  formElement.addEventListener("input", function () {
+    formElement.checkValidity()
+  })
+  formElement.addEventListener("invalid", function () {
+    errorValidHandler(formElement)
+  })
+}
+
+submitButton.addEventListener("click", function () {
+  submitButtonClickHandler(adFormTitle)
+  submitButtonClickHandler(adFormPrice)
 })
 
-function minPriceValueHandler(adFormType, adFormPrice){
-  switch (adFormType.value){
+function formElementChangeHandler(formElement) {
+  formElement.setCustomValidity("")
+  formElement.checkValidity()
+  formElement.addEventListener("input", function () {
+    formElement.checkValidity()
+  })
+}
+
+formElementValidHandler(adFormTitle)
+formElementValidHandler(adFormPrice)
+
+function formElementValidHandler(formElement) {
+  formElement.addEventListener("change", function () {
+    formElementChangeHandler(formElement)
+  })
+  formElement.addEventListener("valid", function () {
+    formElement.setCustomValidity("")
+    formElement.classList.remove("ad-form__element--error")
+    formElement.checkValidity()
+  })
+  formElement.addEventListener("invalid", function () {
+    errorValidHandler(formElement)
+  })
+}
+
+function minPriceValueHandler(adFormType, adFormPrice) {
+  switch (adFormType.value) {
     case "bungalo":
       adFormPrice.min = priceTypes.bungalo
       adFormPrice.placeholder = priceTypes.bungalo
@@ -280,18 +316,69 @@ function minPriceValueHandler(adFormType, adFormPrice){
 }
 
 minPriceValueHandler(adFormType, adFormPrice)
+
 adFormType.addEventListener("input", function () {
   minPriceValueHandler(adFormType, adFormPrice)
-  if (!adFormPrice.validity.valid){
-    errorValidHandler(adFormPrice)
+})
+
+let adFormRoomNumber = adFormAnnoucement.querySelector("#room_number")
+let adFormCapacity = adFormAnnoucement.querySelector("#capacity")
+roomNumberChangeValueHandler(adFormRoomNumber, adFormCapacity)
+adFormRoomNumber.addEventListener("input", function () {
+  roomNumberChangeValueHandler(adFormRoomNumber, adFormCapacity)
+})
+
+function capacityOptionsHiddenHandler(options) {
+  for (let i = 0; i < options.length; i++) {
+    options[i].classList.add("hidden")
   }
-})
+}
 
-adFormPrice.addEventListener("input", function () {
-  adFormPrice.setCustomValidity("")
-  adFormPrice.checkValidity()
-})
-adFormPrice.addEventListener("invalid", function () {
-  errorValidHandler(adFormPrice)
-})
+function capacityOptionsVisibleHandler(option) {
+  option.classList.remove("hidden")
+}
 
+function roomNumberChangeValueHandler(adFormRoomNumber, adFormCapacity) {
+  let capacityOptions = adFormCapacity.querySelectorAll("option")
+  capacityOptionsHiddenHandler(capacityOptions)
+  switch (adFormRoomNumber.value) {
+    case "100":
+      capacityOptionsVisibleHandler(capacityOptions[3])
+      capacityOptions[3].selected = true
+      break
+    case "1":
+      capacityOptionsVisibleHandler(capacityOptions[2])
+      capacityOptions[2].selected = true
+      break
+    case "2":
+      capacityOptionsVisibleHandler(capacityOptions[1])
+      capacityOptionsVisibleHandler(capacityOptions[2])
+      capacityOptions[1].selected = true
+      break
+    case "3":
+      for (let i = 0; i < capacityOptions.length - 1; i++) {
+        capacityOptionsVisibleHandler(capacityOptions[i])
+      }
+      capacityOptions[0].selected = true
+      break
+    default:
+      for (let i = 0; i < capacityOptions.length; i++) {
+        capacityOptionsVisibleHandler(capacityOptions[i])
+      }
+      capacityOptions[0].selected = true
+  }
+}
+
+let adFormTimeIn = adFormAnnoucement.querySelector("#timein")
+let adFormTimeOut = adFormAnnoucement.querySelector("#timeout")
+
+function timeClickHandler(clickTime, changeTime) {
+  changeTime.value = clickTime.value
+}
+
+adFormTimeIn.addEventListener("input", function () {
+  timeClickHandler(adFormTimeIn, adFormTimeOut)
+})
+adFormTimeOut.addEventListener("input", function () {
+  timeClickHandler(adFormTimeOut, adFormTimeIn)
+})

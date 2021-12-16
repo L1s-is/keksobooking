@@ -606,6 +606,8 @@ fieldset {
   padding-bottom: 5px;
 }
 
+
+
 .ad-form__element input,
 .ad-form__element select,
 .ad-form__element textarea {
@@ -1215,4 +1217,26 @@ fieldset {
   -webkit-transform: translateX(-50%);
       -ms-transform: translateX(-50%);
           transform: translateX(-50%);
+}
+@keyframes validation-error {
+  0%, 50%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30% {
+    transform: translateX(-10px);
+  }
+  20%, 40% {
+    transform: translateX(10px);
+  }
+}
+.ad-form__element--error:invalid{
+  animation: 1.2s ease-in-out validation-error;
+  border: 2px solid red;
+  background-color: rgba(255,0,0,0.3);
+  transition: 0.5s;
+}
+.ad-form__element--error:invalid:focus{
+  border: 2px solid red;
+  background-color: rgba(255,0,0,0.3);
+  transition: 0.5s;
 }
