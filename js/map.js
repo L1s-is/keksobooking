@@ -107,6 +107,8 @@ function createArrayOfObjects(avatars, titles, types, times, features, photos) {
   return arr
 }
 
+/*--------------------------------------------------------------------------------*/
+
 function createMapPin(element) {
   let newPin = mapPin.cloneNode(true)
   let newPinImg = newPin.querySelector("img")
@@ -126,11 +128,11 @@ function createFragment(arr) {
   }
   listOfPins.appendChild(fragment)
 }
-
+const mainPinWidth = 64
+const mainPinHeight = 80
 function getAddressFormAnnoucement() {
-  let coordinats = mapPinMain.getBoundingClientRect()
-  let coordinatX = Math.round(coordinats.left - pinWidth / 2)
-  let coordinatY = Math.round(coordinats.top + window.pageYOffset - pinHeight)
+  let coordinatX = Math.round(mapPinMain.offsetLeft + mainPinWidth / 2)
+  let coordinatY = Math.round(mapPinMain.offsetTop + mainPinHeight)
   let addressInputValue = coordinatX + ", " + coordinatY
   return addressInputValue
 }
@@ -211,7 +213,7 @@ function mapPinClickHandler(mapCards) {
 }
 
 let k = true
-
+addressInput.value = getAddressFormAnnoucement()
 function mapActiveHandler() {
   addressInput.value = getAddressFormAnnoucement()
   if (k) {
@@ -230,7 +232,43 @@ function mapActiveHandler() {
   }
 }
 
-mapPinMain.addEventListener('mouseup', mapActiveHandler)
+mapPinMain.addEventListener('mousedown', function (evt){
+  let startCoordinates = {
+    x: evt.clientX,
+    y: evt.clientY
+  }
+  function mouseMoveHandler (moveEvt){
+    let shiftCoordinates = {
+      x: startCoordinates.x - moveEvt.clientX,
+      y: startCoordinates.y - moveEvt.clientY
+    }
+    startCoordinates = {
+      x: moveEvt.clientX,
+      y: moveEvt.clientY
+    }
+    if (mapPinMain.offsetLeft < 0){
+      mapPinMain.style.left = 1 + "px"
+    } else if (mapPinMain.offsetTop < 90){
+      mapPinMain.style.top = 91 + "px"
+    } else if (mapPinMain.offsetLeft + mainPinWidth > mapPinMain.parentElement.clientWidth){
+      mapPinMain.style.left = (mapPinMain.parentElement.clientWidth - mainPinWidth - 1) + "px"
+    } else if (mapPinMain.offsetTop + mainPinHeight > mapPinMain.parentElement.clientHeight){
+      mapPinMain.style.top = (mapPinMain.parentElement.clientHeight - mainPinHeight - 1) + "px"
+    } else {
+      mapPinMain.style.left = (mapPinMain.offsetLeft - shiftCoordinates.x) + "px"
+      mapPinMain.style.top = (mapPinMain.offsetTop - shiftCoordinates.y) + "px"
+    }
+  }
+  document.addEventListener('mousemove', mouseMoveHandler)
+  function mouseUpHandler (upEvt) {
+    mapActiveHandler()
+    document.removeEventListener("mousemove", mouseMoveHandler)
+    document.removeEventListener("mouseup", mouseUpHandler)
+  }
+  document.addEventListener("mouseup", mouseUpHandler)
+})
+
+/*--------------------------------------------------------------------------------*/
 
 function errorValidHandler(formElement) {
   formElement.classList.add("ad-form__element--error")
