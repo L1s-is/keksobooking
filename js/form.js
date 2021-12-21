@@ -98,6 +98,10 @@
 
   adFormType.addEventListener("input", function () {
     minPriceValueHandler(adFormType, adFormPrice)
+    if (!adFormPrice.validity.valueMissing){
+      adFormPrice.checkValidity()
+      errorValidHandler(adFormPrice)
+    }
   })
 
   let adFormRoomNumber = adFormAnnoucement.querySelector("#room_number")
