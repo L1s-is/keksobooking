@@ -45,6 +45,12 @@
     submitButtonClickHandler(adFormPrice)
   })
 
+  adFormAnnoucement.addEventListener("click", function () {
+    if (!addressInput.value){
+      addressInput.value = getAddressFormAnnoucement()
+    }
+  })
+
   function formElementChangeHandler(formElement) {
     formElement.setCustomValidity("")
     formElement.checkValidity()
@@ -164,6 +170,26 @@
   })
   adFormTimeOut.addEventListener("input", function () {
     timeClickHandler(adFormTimeOut, adFormTimeIn)
+  })
+
+  function formElementActiveHandler(arr) {
+    for (let i = 0; i < arr.length; i++) {
+      arr[i].disabled = true
+    }
+  }
+
+  let sendDataURL = "https://24.javascript.pages.academy/keksobooking"
+  adFormAnnoucement.addEventListener("submit", function (evt){
+    upLoadHandler(sendDataURL, new FormData(adFormAnnoucement), function (response){
+      map.classList.add("map--faded")
+      adFormAnnoucement.classList.add('ad-form--disabled')
+      formElementActiveHandler(adFormAnnoucement.elements)
+      mapPinMain.style.left = "50%"
+      mapPinMain.style.top = "375px"
+      mapPinMain.style.marginLeft = -mainPinWidth / 2 + "px"
+    })
+    adFormAnnoucement.reset()
+    evt.preventDefault()
   })
 })()
 

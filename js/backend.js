@@ -49,6 +49,7 @@ function errorHandler(message) {
 
 function successHandler(data) {
   console.log(data)
+  /*window.listObjects = data*/
 }
 
 let getDataURL = "https://24.javascript.pages.academy/keksobooking/data"

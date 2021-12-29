@@ -1,8 +1,5 @@
 'use strict';
 
-let map
-let listObjects
-
 (function () {
   map = document.querySelector(".map")
   const amountObject = 8
