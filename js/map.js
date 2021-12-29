@@ -1,20 +1,19 @@
 'use strict';
 
-let adFormAnnoucement
-
 (function () {
+  window.map = document.querySelector(".map")
   let template = document.querySelector("template")
   let newTemplate = template.content.querySelector('.map__card');
   let mapPin = template.content.querySelector(".map__pin")
   let findCreateMapPins
-  let mapPinMain = document.querySelector(".map__pin--main")
+  window.mapPinMain = document.querySelector(".map__pin--main")
   let mapFilters = document.querySelector(".map__filters")
   let mapFiltersSelects = mapFilters.querySelectorAll("select")
   let mapFiltersFieldset = mapFilters.querySelectorAll("fieldset")
   let listOfPins = document.querySelector(".map__pins")
-  adFormAnnoucement = document.querySelector(".ad-form")
+  window.adFormAnnoucement = document.querySelector(".ad-form")
   let adFormFieldsets = adFormAnnoucement.querySelectorAll("fieldset")
-  let addressInput = adFormAnnoucement.querySelector("#address")
+  window.addressInput = adFormAnnoucement.querySelector("#address")
   let mapFiltersContainer = map.querySelector(".map__filters-container")
   const pinWidth = 50
   const pinHeight = 70
@@ -45,10 +44,9 @@ let adFormAnnoucement
     listOfPins.appendChild(fragment)
   }
 
-  const mainPinWidth = 64
+  window.mainPinWidth = 64
   const mainPinHeight = 80
-
-  function getAddressFormAnnoucement() {
+  window.getAddressFormAnnoucement = function (){
     let coordinatX = Math.round(mapPinMain.offsetLeft + mainPinWidth / 2)
     let coordinatY = Math.round(mapPinMain.offsetTop + mainPinHeight)
     let addressInputValue = coordinatX + ", " + coordinatY
@@ -56,12 +54,12 @@ let adFormAnnoucement
   }
 
   function formAnnoucementActiveHandler() {
-    adFormAnnoucement.classList.remove('ad-form--disabled')
+      adFormAnnoucement.classList.remove('ad-form--disabled')
   }
 
-  function formElementActiveHandler(disabledArr) {
-    for (let i = 0; i < disabledArr.length; i++) {
-      disabledArr[i].disabled = false
+  function formElementActiveHandler(arr) {
+    for (let i = 0; i < arr.length; i++) {
+      arr[i].disabled = false
     }
   }
 
@@ -130,24 +128,20 @@ let adFormAnnoucement
     }
   }
 
-  let k = true
-  addressInput.value = getAddressFormAnnoucement()
+  addressInput.value = window.getAddressFormAnnoucement()
 
   function mapActiveHandler() {
-    addressInput.value = getAddressFormAnnoucement()
-    if (k) {
+    addressInput.value = window.getAddressFormAnnoucement()
+    if (map.className === "map map--faded") {
       map.classList.remove("map--faded")
       formAnnoucementActiveHandler()
-      formElementActiveHandler(adFormFieldsets)
-      formElementActiveHandler(mapFiltersSelects)
-      formElementActiveHandler(mapFiltersFieldset)
+      formElementActiveHandler(adFormAnnoucement.elements)
       createFragment(listObjects)
       findCreateMapPins = map.querySelectorAll(".map__pin")
       console.log(findCreateMapPins)
       createMapPinAnnoucements()
       let mapCards = map.querySelectorAll(".map__card")
       mapPinClickHandler(mapCards)
-      k = false
     }
   }
 
