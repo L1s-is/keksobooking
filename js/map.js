@@ -21,14 +21,14 @@
     palace: 'Дворец',
     flat: 'Квартира',
     house: 'Дом',
-    bungalo: 'Бунгало'
+    bungalow: 'Бунгало'
   }
 
   function createMapPin(element) {
     let newPin = mapPin.cloneNode(true)
     let newPinImg = newPin.querySelector("img")
-    newPin.style.left = element.location.x - pinWidth / 2 + "px"
-    newPin.style.top = element.location.y - pinHeight + "px"
+    newPin.style.left = ~~element.location.lat - pinWidth / 2 + "px"
+    newPin.style.top = ~~element.location.lng - pinHeight + "px"
     newPinImg.src = element.author.avatar
     newPinImg.alt = element.offer.title
     console.log(newPin)
@@ -83,8 +83,11 @@
     newAnnouncement.querySelector(".popup__text--capacity").textContent = element.offer.rooms + " комнаты для " + element.offer.guests + " гостей"
     newAnnouncement.querySelector(".popup__text--time").textContent = "Заезд после " + element.offer.checkin + ", выезд до " + element.offer.checkout
     newAnnouncement.querySelector(".popup__features").textContent = ""
-    let features = createFeatures(element)
+    if (element.offer.features){
+      let features = createFeatures(element)
     newAnnouncement.querySelector(".popup__features").appendChild(features)
+    }
+
     newAnnouncement.querySelector(".popup__description").textContent = element.offer.description
     newAnnouncement.querySelector(".popup__photo").src = element.offer.photos
     newAnnouncement.classList.add("visually-hidden")
