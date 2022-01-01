@@ -74,6 +74,15 @@
     }
     return fragment
   }
+  function createPhotos(arr) {
+    let fragment = document.createDocumentFragment()
+    for (let i = 0; i < arr.offer.photos.length; i++) {
+      let photos = newTemplate.querySelector(".popup__photo").cloneNode(true)
+      photos.src = arr.offer.photos[i]
+      fragment.appendChild(photos)
+    }
+    return fragment
+  }
 
   function createAnnouncement(element) {
     let newAnnouncement = newTemplate.cloneNode(true)
@@ -89,9 +98,12 @@
       let features = createFeatures(element)
     newAnnouncement.querySelector(".popup__features").appendChild(features)
     }
-
     newAnnouncement.querySelector(".popup__description").textContent = element.offer.description
-    newAnnouncement.querySelector(".popup__photo").src = element.offer.photos
+    newAnnouncement.querySelector(".popup__photos").removeChild(newAnnouncement.querySelector(".popup__photo"))
+    if (element.offer.photos){
+      let photos = createPhotos(element)
+      newAnnouncement.querySelector(".popup__photos").appendChild(photos)
+    }
     newAnnouncement.classList.add("visually-hidden")
     map.insertBefore(newAnnouncement, mapFiltersContainer)
     return newAnnouncement
