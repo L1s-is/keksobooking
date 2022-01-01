@@ -46,7 +46,7 @@
   })
 
   adFormAnnoucement.addEventListener("click", function () {
-    if (!addressInput.value){
+    if (!addressInput.value) {
       addressInput.value = getAddressFormAnnoucement()
     }
   })
@@ -104,7 +104,7 @@
 
   adFormType.addEventListener("input", function () {
     minPriceValueHandler(adFormType, adFormPrice)
-    if (!adFormPrice.validity.valueMissing){
+    if (!adFormPrice.validity.valueMissing) {
       adFormPrice.checkValidity()
       errorValidHandler(adFormPrice)
     }
@@ -178,15 +178,26 @@
     }
   }
 
+  function mapPinHiddenHandler(findCreateMapPins, mapCards) {
+    let mapPinActive = map.querySelector(".map__pin--active")
+    for (let i = 1; i < findCreateMapPins.length; i++) {
+      findCreateMapPins[i].classList.add("hidden")
+      mapCards[i - 1].classList.add("hidden")
+    }
+    if (mapPinActive) {
+      mapPinActive.classList.remove("map__pin--active")
+    }
+  }
+
   let sendDataURL = "https://24.javascript.pages.academy/keksobooking"
-  adFormAnnoucement.addEventListener("submit", function (evt){
-    upLoadHandler(sendDataURL, new FormData(adFormAnnoucement), function (response){
+  adFormAnnoucement.addEventListener("submit", function (evt) {
+    upLoadHandler(sendDataURL, new FormData(adFormAnnoucement), function (response) {
       map.classList.add("map--faded")
+      mapPinHiddenHandler(findCreateMapPins, mapCards)
       adFormAnnoucement.classList.add('ad-form--disabled')
       formElementActiveHandler(adFormAnnoucement.elements)
-      mapPinMain.style.left = "50%"
+      mapPinMain.style.left = mapPinMain.closest("div").offsetWidth / 2 - (mainPinWidth / 2) + "px"
       mapPinMain.style.top = "375px"
-      mapPinMain.style.marginLeft = -mainPinWidth / 2 + "px"
     })
     adFormAnnoucement.reset()
     evt.preventDefault()
