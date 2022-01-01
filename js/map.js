@@ -8,8 +8,6 @@
   let findCreateMapPins
   window.mapPinMain = document.querySelector(".map__pin--main")
   let mapFilters = document.querySelector(".map__filters")
-  let mapFiltersSelects = mapFilters.querySelectorAll("select")
-  let mapFiltersFieldset = mapFilters.querySelectorAll("fieldset")
   let listOfPins = document.querySelector(".map__pins")
   window.adFormAnnoucement = document.querySelector(".ad-form")
   let adFormFieldsets = adFormAnnoucement.querySelectorAll("fieldset")
@@ -31,8 +29,8 @@
   function createMapPin(element) {
     let newPin = mapPin.cloneNode(true)
     let newPinImg = newPin.querySelector("img")
-    newPin.style.left = getRandomIntegerInRange(100, map.offsetWidth) - pinWidth / 2 + "px"
-    newPin.style.top = getRandomIntegerInRange(190, 630) - pinHeight + "px"
+    newPin.style.left = getRandomIntegerInRange(pinWidth, map.offsetWidth-pinWidth) - pinWidth / 2 + "px"
+    newPin.style.top = getRandomIntegerInRange(190, 700) - pinHeight + "px"
     newPinImg.src = element.author.avatar
     newPinImg.alt = element.offer.title
     console.log(newPin)
@@ -143,6 +141,7 @@
       map.classList.remove("map--faded")
       formAnnoucementActiveHandler()
       formElementActiveHandler(adFormAnnoucement.elements)
+      formElementActiveHandler(mapFilters.elements)
       createFragment(listObjects)
       findCreateMapPins = map.querySelectorAll(".map__pin")
       console.log(findCreateMapPins)
