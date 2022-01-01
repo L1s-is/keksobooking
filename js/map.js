@@ -24,11 +24,15 @@
     bungalow: 'Бунгало'
   }
 
+  function getRandomIntegerInRange(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
   function createMapPin(element) {
     let newPin = mapPin.cloneNode(true)
     let newPinImg = newPin.querySelector("img")
-    newPin.style.left = ~~element.location.lat - pinWidth / 2 + "px"
-    newPin.style.top = ~~element.location.lng - pinHeight + "px"
+    newPin.style.left = getRandomIntegerInRange(100, map.offsetWidth) - pinWidth / 2 + "px"
+    newPin.style.top = getRandomIntegerInRange(190, 630) - pinHeight + "px"
     newPinImg.src = element.author.avatar
     newPinImg.alt = element.offer.title
     console.log(newPin)
