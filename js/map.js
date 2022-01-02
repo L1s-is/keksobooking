@@ -156,7 +156,9 @@
 
   function mapActiveHandler() {
     addressInput.value = window.getAddressFormAnnoucement()
-    if (k) {
+    if (!listObjects) {
+      errorHandler("Упс! Данные не загружены")
+    } else if (k) {
       map.classList.remove("map--faded")
       formAnnoucementActiveHandler()
       formElementActiveHandler(adFormAnnoucement.elements)
