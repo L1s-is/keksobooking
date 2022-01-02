@@ -38,13 +38,25 @@ function upLoadHandler(url, data, successHandler) {
   let xhr = new XMLHttpRequest()
   xhr.responseType = "json"
   xhr.addEventListener("load", function () {
-    successHandler(xhr.response)
+    switch (xhr.status) {
+      case 200:
+        successHandler(xhr.response)
+        break
+      default:
+        errorHandler("Данные не отправлены, попробуйте позднее")
+        setTimeout(errorMessageHiddenHandler, 3000)
+        break
+    }
   })
   xhr.open("Post", url)
   xhr.send()
 }
 
 let errorMessage = document.querySelector(".error")
+
+function errorMessageHiddenHandler(){
+  errorMessage.classList.add("hidden")
+}
 
 function errorHandler(message) {
   errorMessage.querySelector(".error__message").textContent = message

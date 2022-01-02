@@ -198,8 +198,8 @@
       formElementActiveHandler(adFormAnnoucement.elements)
       mapPinMain.style.left = mapPinMain.closest("div").offsetWidth / 2 - (mainPinWidth / 2) + "px"
       mapPinMain.style.top = "375px"
+      adFormAnnoucement.reset()
     })
-    adFormAnnoucement.reset()
     evt.preventDefault()
   })
 })()
