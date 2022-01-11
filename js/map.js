@@ -154,27 +154,31 @@
   addressInput.value = window.getAddressFormAnnoucement()
   let k = true
 
+  function unblockPageElements() {
+    map.classList.remove("map--faded")
+    formAnnoucementActiveHandler()
+    formElementActiveHandler(adFormAnnoucement.elements)
+    formElementActiveHandler(mapFilters.elements)
+  }
+
+  function createMapElements() {
+    createFragment(listObjects)
+    window.findCreateMapPins = map.querySelectorAll(".map__pin")
+    createMapPinAnnoucements()
+    window.mapCards = map.querySelectorAll(".map__card")
+    mapPinClickHandler(mapCards)
+  }
+
   function mapActiveHandler() {
     addressInput.value = window.getAddressFormAnnoucement()
     if (!window.listObjects) {
       errorHandler("Упс! Данные не загружены")
     } else if (k) {
-      map.classList.remove("map--faded")
-      formAnnoucementActiveHandler()
-      formElementActiveHandler(adFormAnnoucement.elements)
-      formElementActiveHandler(mapFilters.elements)
-      createFragment(listObjects)
-      window.findCreateMapPins = map.querySelectorAll(".map__pin")
-      console.log(findCreateMapPins)
-      createMapPinAnnoucements()
-      window.mapCards = map.querySelectorAll(".map__card")
-      mapPinClickHandler(mapCards)
+      unblockPageElements()
+      createMapElements()
       k = false
     } else if (map.className === "map map--faded") {
-      map.classList.remove("map--faded")
-      formAnnoucementActiveHandler()
-      formElementActiveHandler(adFormAnnoucement.elements)
-      formElementActiveHandler(mapFilters.elements)
+      unblockPageElements()
       mapPinVisibleHandler(findCreateMapPins)
     }
   }
