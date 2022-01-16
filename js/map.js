@@ -7,6 +7,7 @@
   let mapPin = template.content.querySelector(".map__pin")
   window.mapPinMain = document.querySelector(".map__pin--main")
   let mapFilters = document.querySelector(".map__filters")
+  let mapFilterElements = mapFilters.querySelectorAll(".map__filter")
   let listOfPins = document.querySelector(".map__pins")
   window.adFormAnnoucement = document.querySelector(".ad-form")
   let adFormFieldsets = adFormAnnoucement.querySelectorAll("fieldset")
@@ -32,7 +33,6 @@
     newPin.style.top = getRandomIntegerInRange(190, 700) - pinHeight + "px"
     newPinImg.src = element.author.avatar
     newPinImg.alt = element.offer.title
-    console.log(newPin)
     return newPin
   }
 
@@ -43,6 +43,12 @@
       fragment.appendChild(createMapPin(arr[i]))
     }
     listOfPins.appendChild(fragment)
+  }
+
+  function removeFragment(arr) {
+    for (let i = 0; i < arr.length; i++) {
+      listOfPins.removeChild(arr[i])
+    }
   }
 
   window.mainPinWidth = 64
@@ -152,13 +158,20 @@
   }
 
   addressInput.value = window.getAddressFormAnnoucement()
-  let k = true
+  let clickPin = false
+  let loadData = false
 
   function unblockPageElements() {
     map.classList.remove("map--faded")
     formAnnoucementActiveHandler()
     formElementActiveHandler(adFormAnnoucement.elements)
     formElementActiveHandler(mapFilters.elements)
+  }
+
+  function hideMapElements(arr){
+    for (let i = 1; i < arr.length; i++) {
+      arr[i].classList.add("hidden")
+    }
   }
 
   function createMapElements() {
@@ -171,12 +184,12 @@
 
   function mapActiveHandler() {
     addressInput.value = window.getAddressFormAnnoucement()
-    if (!window.listObjects) {
-      errorHandler("Упс! Данные не загружены")
-    } else if (k) {
+    /*if (!window.listObjects) {
+      window.backend.errorHandler("Упс! Данные не загружены")
+    } else */if (!clickPin) {
       unblockPageElements()
       createMapElements()
-      k = false
+      clickPin = true
     } else if (map.className === "map map--faded") {
       unblockPageElements()
       mapPinVisibleHandler(findCreateMapPins)
@@ -184,6 +197,11 @@
   }
 
   mapPinMain.addEventListener('mousedown', function (evt) {
+    if (!loadData){
+      window.backend.loadHandler()
+      loadData = true
+    }
+
     let startCoordinates = {
       x: evt.clientX,
       y: evt.clientY
