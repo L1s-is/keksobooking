@@ -1,7 +1,15 @@
 "use strict";
 
 (function (){
-  function loadHandler(url, successHandler, errorHandler) {
+  window.backend = {
+    loadHandler: loadHandler,
+    uploadHandler: upLoadHandler,
+    errorHandler: errorHandler
+  }
+
+  let getDataURL = "https://24.javascript.pages.academy/keksobooking/data"
+
+  function loadHandler(url = getDataURL) {
     let xhr = new XMLHttpRequest()
     xhr.responseType = "json"
     xhr.addEventListener("load", function () {
@@ -16,7 +24,7 @@
           errorHandler("Пользователь не авторизован")
           break
         case 404:
-          errorHandler("Ничего не найдено")
+          errorHandler("Ошибка загрузки данных с сервера")
           break
         default:
           errorHandler("Статус ответа: " + xhr.status + " " + xhr.statusText)
@@ -46,14 +54,11 @@
     window.listObjects = data
   }
 
-  let getDataURL = "https://24.javascript.pages.academy/keksobooking/data"
-  loadHandler(getDataURL, successHandler, errorHandler)
-
   function errorMessageHiddenHandler(){
     errorMessage.classList.add("hidden")
   }
 
-  window.upLoadHandler = function (url, data, successHandler) {
+  function upLoadHandler (url, data, successHandler) {
     let xhr = new XMLHttpRequest()
     xhr.responseType = "json"
     xhr.addEventListener("load", function () {
