@@ -128,22 +128,27 @@
     return newAnnouncement
   }
 
+  //создает попапы объявлений о сдаче при клике по соответствующей метке на карте
   function createMapPinAnnoucements(arr) {
     for (let i = 0; i < arr.length; i++) {
       createAnnouncement(arr[i])
     }
   }
 
+  //показывает объявление, соответствующее нажатой метке на карте + добавляет ей выделяющий класс
   function PopupActiveHandler(annoucement, mapPin) {
     annoucement.classList.remove("hidden")
     mapPin.classList.add("map__pin--active")
   }
 
+
+  //скрывает объявление, удаляет выделяющий метку класс
   function PopupInactiveHandler(annoucement, mapPin) {
     annoucement.classList.add("hidden")
     mapPin.classList.remove("map__pin--active")
   }
 
+  //действия при нажатии метки: открытие соответствующего попапа и закрытие остальных
   function mapPinClickHandler(mapCards) {
     for (let i = 0; i < findCreateMapPins.length; i++) {
       findCreateMapPins[i].addEventListener("click", function () {
@@ -167,13 +172,14 @@
     }
   }
 
+  //вновь отображает метки на карте
   function mapPinVisibleHandler(findCreateMapPins) {
     for (let i = 1; i < findCreateMapPins.length; i++) {
       findCreateMapPins[i].classList.remove("hidden")
     }
   }
 
-//записываем значение текущих координат метки в поле "Адрес" формы при загрузке страницы
+  //записываем значение текущих координат метки в поле "Адрес" формы при загрузке страницы
   addressInput.value = window.getAddressFormAnnoucement()
   let clickPin = false
   let loadData = false
