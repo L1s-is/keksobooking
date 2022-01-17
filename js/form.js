@@ -191,7 +191,7 @@
 
   let sendDataURL = "https://24.javascript.pages.academy/keksobooking"
   adFormAnnoucement.addEventListener("submit", function (evt) {
-    upLoadHandler(sendDataURL, new FormData(adFormAnnoucement), function (response) {
+    window.backend.upLoadHandler(sendDataURL, new FormData(adFormAnnoucement), function (response) {
       map.classList.add("map--faded")
       mapPinHiddenHandler(findCreateMapPins, mapCards)
       adFormAnnoucement.classList.add('ad-form--disabled')

@@ -3,7 +3,7 @@
 (function (){
   window.backend = {
     loadHandler: loadHandler,
-    uploadHandler: upLoadHandler,
+    upLoadHandler: upLoadHandler,
     errorHandler: errorHandler
   }
 
