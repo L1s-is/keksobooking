@@ -1,13 +1,15 @@
 'use strict';
 
 (function () {
+  window.mapjs = {
+    changeMapPins: changeMapPins
+  }
   window.map = document.querySelector(".map")
   let template = document.querySelector("template")
   let newTemplate = template.content.querySelector('.map__card');
   let mapPin = template.content.querySelector(".map__pin")
   window.mapPinMain = document.querySelector(".map__pin--main")
   let mapFilters = document.querySelector(".map__filters")
-  let mapFilterElements = mapFilters.querySelectorAll(".map__filter")
   let listOfPins = document.querySelector(".map__pins")
   window.adFormAnnoucement = document.querySelector(".ad-form")
   let adFormFieldsets = adFormAnnoucement.querySelectorAll("fieldset")
@@ -22,10 +24,12 @@
     bungalow: 'Бунгало'
   }
 
+  //генерирует случайное число из диапазона
   function getRandomIntegerInRange(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
+  //создает новые метки объявлений со случайными координатами (со случайными, т.к. с сервера некорректно подтягиваются данные)
   function createMapPin(element) {
     let newPin = mapPin.cloneNode(true)
     let newPinImg = newPin.querySelector("img")
@@ -36,6 +40,7 @@
     return newPin
   }
 
+  //добавляет метки объявлений на карту
   function createFragment(arr) {
     let fragment = document.createDocumentFragment()
     for (let i = 0; i < arr.length; i++) {
@@ -45,14 +50,17 @@
     listOfPins.appendChild(fragment)
   }
 
+  //удаляет метки/попапы объявлений с карты
   function removeFragment(arr) {
+    let parentNode = arr[0].parentNode
     for (let i = 0; i < arr.length; i++) {
-      listOfPins.removeChild(arr[i])
+      parentNode.removeChild(arr[i])
     }
   }
 
   window.mainPinWidth = 64
   const mainPinHeight = 80
+  //высчитывает и записывает в новую метку на карте координаты ее указателя(где нужно отобразить метку)
   window.getAddressFormAnnoucement = function () {
     let coordinatX = Math.round(mapPinMain.offsetLeft + mainPinWidth / 2)
     let coordinatY = Math.round(mapPinMain.offsetTop + mainPinHeight)
@@ -60,16 +68,19 @@
     return addressInputValue
   }
 
+  //убирает визуальную блокировку формы
   function formAnnoucementActiveHandler() {
     adFormAnnoucement.classList.remove('ad-form--disabled')
   }
 
+  //убирает с элементов формы атрибут disabled
   function formElementActiveHandler(arr) {
     for (let i = 0; i < arr.length; i++) {
       arr[i].disabled = false
     }
   }
 
+  //добавляет список преимуществ в новый попап
   function createFeatures(arr) {
     let fragment = document.createDocumentFragment()
     for (let i = 0; i < arr.offer.features.length; i++) {
@@ -80,6 +91,7 @@
     return fragment
   }
 
+  //добавляет список фото недвижимости в новый попап
   function createPhotos(arr) {
     let fragment = document.createDocumentFragment()
     for (let i = 0; i < arr.offer.photos.length; i++) {
@@ -90,6 +102,7 @@
     return fragment
   }
 
+  //создает новый попап объявления о сдаче
   function createAnnouncement(element) {
     let newAnnouncement = newTemplate.cloneNode(true)
     newAnnouncement.querySelector(".popup__avatar").src = element.author.avatar
@@ -115,9 +128,9 @@
     return newAnnouncement
   }
 
-  function createMapPinAnnoucements() {
-    for (let i = 0; i < listObjects.length; i++) {
-      createAnnouncement(listObjects[i])
+  function createMapPinAnnoucements(arr) {
+    for (let i = 0; i < arr.length; i++) {
+      createAnnouncement(arr[i])
     }
   }
 
@@ -132,22 +145,25 @@
   }
 
   function mapPinClickHandler(mapCards) {
-    for (let i = 1; i < findCreateMapPins.length; i++) {
+    for (let i = 0; i < findCreateMapPins.length; i++) {
       findCreateMapPins[i].addEventListener("click", function () {
-        for (let j = 1; j < findCreateMapPins.length; j++) {
-          PopupInactiveHandler(mapCards[j - 1], findCreateMapPins[j])
+        for (let j = 0; j < findCreateMapPins.length; j++) {
+          PopupInactiveHandler(mapCards[j], findCreateMapPins[j])
         }
-        PopupActiveHandler(mapCards[i - 1], findCreateMapPins[i])
+        PopupActiveHandler(mapCards[i], findCreateMapPins[i])
       })
-      let popupClose = mapCards[i - 1].querySelector(".popup__close")
+
+      let popupClose = mapCards[i].querySelector(".popup__close")
       popupClose.addEventListener("click", function () {
-        PopupInactiveHandler(mapCards[i - 1], findCreateMapPins[i])
+        PopupInactiveHandler(mapCards[i], findCreateMapPins[i])
       })
-      window.addEventListener("keydown", function (evt) {
+
+      function keyDownHandler(evt){
         if (evt.keyCode === 27) {
-          PopupInactiveHandler(mapCards[i - 1], findCreateMapPins[i])
+          PopupInactiveHandler(mapCards[i], findCreateMapPins[i])
         }
-      })
+      }
+      window.addEventListener("keydown", keyDownHandler)
     }
   }
 
@@ -157,13 +173,19 @@
     }
   }
 
+//записываем значение текущих координат метки в поле "Адрес" формы при загрузке страницы
   addressInput.value = window.getAddressFormAnnoucement()
   let clickPin = false
   let loadData = false
 
   function unblockPageElements() {
+    //убираем класс визуальной "блокировки" карты
     map.classList.remove("map--faded")
+
+    //убираем класс визуальной "блокировки" формы
     formAnnoucementActiveHandler()
+
+    //снимаем значение disabled с элементов формы
     formElementActiveHandler(adFormAnnoucement.elements)
     formElementActiveHandler(mapFilters.elements)
   }
@@ -174,29 +196,67 @@
     }
   }
 
-  function createMapElements() {
-    createFragment(listObjects)
-    window.findCreateMapPins = map.querySelectorAll(".map__pin")
-    createMapPinAnnoucements()
+  function changeMapPins () {
+    // Фильтрует объявления и создает массив отфильтрованных объявлений
+    let filterListObjects = window.filterPins(listObjects);
+
+    // Удаляет элементы 'Метка объявления', если они существуют
+    if (window.findCreateMapPins.length){
+      removeFragment(window.findCreateMapPins)
+      removeFragment(mapCards)
+    }
+
+    // Создает массив элементов 'Метка объявления' на основе массива отфильтрованных объявлений
+    createMapElements(filterListObjects)
+  }
+
+  function createMapElements(arr) {
+    //создает метки объявлений на карте
+    createFragment(arr)
+
+    //ищет созданные метки объявлений, кроме перетаскивающейся метки
+    window.findCreateMapPins = map.querySelectorAll(".map__pin:not(.map__pin--main)")
+
+    //создает попапы объявлений о сдаче при клике по соответствующей метке на карте
+    createMapPinAnnoucements(arr)
+
+    //ищет созданные попапы объявлений о сдаче
     window.mapCards = map.querySelectorAll(".map__card")
+
+    //запускает обработчик событий при клике на метку карты для отрисовки соответствующего попапа объявления о сдаче
     mapPinClickHandler(mapCards)
   }
 
   function mapActiveHandler() {
+    //записывает координаты указателя метки в поле формы 'Адрес'
     addressInput.value = window.getAddressFormAnnoucement()
-    /*if (!window.listObjects) {
-      window.backend.errorHandler("Упс! Данные не загружены")
-    } else */if (!clickPin) {
+
+    //проверка на подгрузку данных с сервера
+    //проверка на первое перетаскивание метки
+    //проверка на блокировку карты(были отправлены данные по ajax)
+    if (!window.listObjects) {
+      map.classList.remove("map--faded")
+      /*window.backend.errorHandler("Упс! Данные не загружены")*/
+    } else if (!clickPin) {
+      //разблокирует элементы страницы
       unblockPageElements()
-      createMapElements()
+
+      //создает метки объявлений на карте по данным с сервера
+      createMapElements(listObjects)
+
+      //изменяем значение, чтобы понимать, что первое перемещение метки произошло
       clickPin = true
     } else if (map.className === "map map--faded") {
+      //разблокирует элементы страницы после отправки формы по ajax
       unblockPageElements()
+
+      //покажет скрытые при отправке формы по ajax метки на карте
       mapPinVisibleHandler(findCreateMapPins)
     }
   }
 
   mapPinMain.addEventListener('mousedown', function (evt) {
+    //проверка, что данные не загружены
     if (!loadData){
       window.backend.loadHandler()
       loadData = true
@@ -208,6 +268,7 @@
     }
 
     function mouseMoveHandler(moveEvt) {
+      //высчитываем новое положение метки
       let shiftCoordinates = {
         x: startCoordinates.x - moveEvt.clientX,
         y: startCoordinates.y - moveEvt.clientY
@@ -216,6 +277,7 @@
         x: moveEvt.clientX,
         y: moveEvt.clientY
       }
+      //условие, чтобы метка не выходила за пределы карты
       if (mapPinMain.offsetLeft < 0) {
         mapPinMain.style.left = 1 + "px"
       } else if (mapPinMain.offsetTop < 90) {
@@ -233,6 +295,7 @@
     document.addEventListener('mousemove', mouseMoveHandler)
 
     function mouseUpHandler(upEvt) {
+      //делаем элементы страницы активными, если это не так
       mapActiveHandler()
       document.removeEventListener("mousemove", mouseMoveHandler)
       document.removeEventListener("mouseup", mouseUpHandler)
