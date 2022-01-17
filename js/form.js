@@ -11,6 +11,7 @@
     bungalo: '100'
   }
 
+  //валидация элементов формы "Заголовок" и "Цена"
   function errorValidHandler(formElement) {
     formElement.classList.add("ad-form__element--error")
     if (formElement.validity.valueMissing) {
@@ -31,6 +32,7 @@
 
   let submitButton = adFormAnnoucement.querySelector(".ad-form__submit")
 
+  //валидация элементов формы при клике на кнопку отправки формы
   function submitButtonClickHandler(formElement) {
     formElement.addEventListener("input", function () {
       formElement.checkValidity()
@@ -76,6 +78,7 @@
     })
   }
 
+  //меняет значение минимальной цены и плейсхолдера для разных типов жилья
   function minPriceValueHandler(adFormType, adFormPrice) {
     switch (adFormType.value) {
       case "bungalo":
@@ -127,6 +130,7 @@
     option.classList.remove("hidden")
   }
 
+  //удаление неподходящих элементов поля "колличество гостей" (каждому гостю не менее, чем одна комната, выбор "Не для гостей" при колличестве комнат = 100)
   function roomNumberChangeValueHandler(adFormRoomNumber, adFormCapacity) {
     let capacityOptions = adFormCapacity.querySelectorAll("option")
     capacityOptionsHiddenHandler(capacityOptions)
@@ -161,6 +165,7 @@
   let adFormTimeIn = adFormAnnoucement.querySelector("#timein")
   let adFormTimeOut = adFormAnnoucement.querySelector("#timeout")
 
+  //синхронизирует значение полей время заезда и выезда
   function timeClickHandler(clickTime, changeTime) {
     changeTime.value = clickTime.value
   }
@@ -172,17 +177,19 @@
     timeClickHandler(adFormTimeOut, adFormTimeIn)
   })
 
+  //блокирует поля формы при успешной отправке данных на сервер (по ТЗ сайт возвращается в начальное положение без перезагрузки страницы)
   function formElementActiveHandler(arr) {
     for (let i = 0; i < arr.length; i++) {
       arr[i].disabled = true
     }
   }
 
+  //скрывает элементы с карты
   function mapPinHiddenHandler(findCreateMapPins, mapCards) {
     let mapPinActive = map.querySelector(".map__pin--active")
     for (let i = 1; i < findCreateMapPins.length; i++) {
       findCreateMapPins[i].classList.add("hidden")
-      mapCards[i - 1].classList.add("hidden")
+      mapCards[i].classList.add("hidden")
     }
     if (mapPinActive) {
       mapPinActive.classList.remove("map__pin--active")
