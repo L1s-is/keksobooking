@@ -61,7 +61,7 @@
   window.mainPinWidth = 64
   const mainPinHeight = 80
   //высчитывает и записывает в новую метку на карте координаты ее указателя(где нужно отобразить метку)
-  window.getAddressFormAnnoucement = function () {
+  window.getAddressFormAnnoucement = function () { //getAddressCoords
     let coordinatX = Math.round(mapPinMain.offsetLeft + mainPinWidth / 2)
     let coordinatY = Math.round(mapPinMain.offsetTop + mainPinHeight)
     let addressInputValue = coordinatX + ", " + coordinatY
@@ -149,7 +149,7 @@
   }
 
   //действия при нажатии метки: открытие соответствующего попапа и закрытие остальных
-  function mapPinClickHandler(mapCards) {
+  function mapPinClickHandler(mapCards, findCreateMapPins) {
     for (let i = 0; i < findCreateMapPins.length; i++) {
       findCreateMapPins[i].addEventListener("click", function () {
         for (let j = 0; j < findCreateMapPins.length; j++) {
@@ -163,12 +163,11 @@
         PopupInactiveHandler(mapCards[i], findCreateMapPins[i])
       })
 
-      function keyDownHandler(evt){
+      window.addEventListener("keydown", function (evt){
         if (evt.keyCode === 27) {
           PopupInactiveHandler(mapCards[i], findCreateMapPins[i])
         }
-      }
-      window.addEventListener("keydown", keyDownHandler)
+      })
     }
   }
 
@@ -230,7 +229,7 @@
     window.mapCards = map.querySelectorAll(".map__card")
 
     //запускает обработчик событий при клике на метку карты для отрисовки соответствующего попапа объявления о сдаче
-    mapPinClickHandler(mapCards)
+    mapPinClickHandler(window.mapCards, window.findCreateMapPins)
   }
 
   function mapActiveHandler() {
