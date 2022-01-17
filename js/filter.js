@@ -31,15 +31,14 @@
 
   //Фильтрует объявления по интервалу цен
   function filterByPrice (arr, filterValue) {
-    arr.filter( elememt => {
+    return arr.filter( element => {
       let priceInterval = {
-        'low': elememt.offer.price < PriceValues.Middle_start,
-        'middle': elememt.offer.price >= PriceValues.Middle_start && ad.offer.price <= PriceValues.Middle_final,
-        'high': elememt.offer.price > PriceValues.Middle_final
+        'low': element.offer.price < PriceValues.Middle_start,
+        'middle': element.offer.price >= PriceValues.Middle_start && element.offer.price <= PriceValues.Middle_final,
+        'high': element.offer.price > PriceValues.Middle_final
       }
       return priceInterval[filterValue]
     })
-    return arr.filter
   }
 
   //Фильтрует объявления по характеристикам жилья
