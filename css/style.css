@@ -1226,6 +1226,33 @@ fieldset {
           transform: translateX(-50%);
 }
 
+.btn {
+  padding: 12px 35px;
+
+  font-family: inherit;
+  font-size: 22px;
+  font-weight: 700;
+
+  -webkit-box-sizing: content-box;
+  box-sizing: content-box;
+
+  color: #ffffff;
+  border: none;
+  background-color: #ff5635;
+  border-radius: 8px;
+}
+
+.btn:hover,
+.btn:focus{
+  background-color: #f84f2e;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.btn:active{
+  background-color: #e94f30;
+  transition: background-color 0.2s ease-in-out;
+}
+
 @keyframes validation-error {
   0%, 50%, 100% {
     transform: translateX(0);

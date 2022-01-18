@@ -7,7 +7,8 @@
     loadHandler: loadHandler,
     upLoadHandler: upLoadHandler,
     errorHandler: errorHandler,
-    listServerData: listServerData
+    listServerData: listServerData,
+    showSuccessMessage: showSuccessMessage
   }
 
   let getDataURL = "https://24.javascript.pages.academy/keksobooking/data"
@@ -50,13 +51,26 @@
   function errorHandler(message) {
     errorMessage.querySelector(".error__message").textContent = message
     errorMessage.classList.remove("hidden")
+    errorMessage.querySelector("button").addEventListener("click", hideErrorMessage)
   }
 
   function successHandler(data) {
     window.backend.listServerData = data
   }
 
-  function errorMessageHiddenHandler(){
+  let successMessage = document.querySelector(".success")
+  function showSuccessMessage () {
+    successMessage.classList.remove("hidden")
+    let successMessageBtn = document.querySelector(".button--success")
+    successMessageBtn.addEventListener("click", hideSuccessMessage)
+    setTimeout(hideSuccessMessage, 3000)
+  }
+
+  function hideSuccessMessage(){
+    successMessage.classList.add("hidden")
+  }
+
+  function hideErrorMessage(){
     errorMessage.classList.add("hidden")
   }
 
@@ -67,10 +81,11 @@
       switch (xhr.status) {
         case 200:
           successHandler(xhr.response)
+          showSuccessMessage()
           break
         default:
           errorHandler("Данные не отправлены, попробуйте позднее")
-          setTimeout(errorMessageHiddenHandler, 3000)
+          setTimeout(hideErrorMessage, 3000)
           break
       }
     })
