@@ -1,9 +1,9 @@
 'use strict';
 
 (function () {
-  let adFormTitle = adFormAnnoucement.querySelector("#title")
-  let adFormPrice = adFormAnnoucement.querySelector("#price")
-  let adFormType = adFormAnnoucement.querySelector("#type")
+  let adFormTitle = window.mapjs.adFormAnnoucement.querySelector("#title")
+  let adFormPrice = window.mapjs.adFormAnnoucement.querySelector("#price")
+  let adFormType = window.mapjs.adFormAnnoucement.querySelector("#type")
   const priceTypes = {
     palace: '10000',
     flat: '1000',
@@ -30,7 +30,7 @@
     }
   }
 
-  let submitButton = adFormAnnoucement.querySelector(".ad-form__submit")
+  let submitButton = window.mapjs.adFormAnnoucement.querySelector(".ad-form__submit")
 
   //валидация элементов формы при клике на кнопку отправки формы
   function submitButtonClickHandler(formElement) {
@@ -47,9 +47,9 @@
     submitButtonClickHandler(adFormPrice)
   })
 
-  adFormAnnoucement.addEventListener("click", function () {
-    if (!addressInput.value) {
-      addressInput.value = getAddressFormAnnoucement()
+  window.mapjs.adFormAnnoucement.addEventListener("click", function () {
+    if (!window.mapjs.addressInput.value) {
+      window.mapjs.addressInput.value = window.mapjs.getAddressCoords()
     }
   })
 
@@ -113,8 +113,8 @@
     }
   })
 
-  let adFormRoomNumber = adFormAnnoucement.querySelector("#room_number")
-  let adFormCapacity = adFormAnnoucement.querySelector("#capacity")
+  let adFormRoomNumber = window.mapjs.adFormAnnoucement.querySelector("#room_number")
+  let adFormCapacity = window.mapjs.adFormAnnoucement.querySelector("#capacity")
   roomNumberChangeValueHandler(adFormRoomNumber, adFormCapacity)
   adFormRoomNumber.addEventListener("input", function () {
     roomNumberChangeValueHandler(adFormRoomNumber, adFormCapacity)
@@ -162,8 +162,8 @@
     }
   }
 
-  let adFormTimeIn = adFormAnnoucement.querySelector("#timein")
-  let adFormTimeOut = adFormAnnoucement.querySelector("#timeout")
+  let adFormTimeIn = window.mapjs.adFormAnnoucement.querySelector("#timein")
+  let adFormTimeOut = window.mapjs.adFormAnnoucement.querySelector("#timeout")
 
   //синхронизирует значение полей время заезда и выезда
   function timeClickHandler(clickTime, changeTime) {
@@ -186,10 +186,10 @@
 
   //скрывает элементы с карты
   function mapPinHiddenHandler(findCreateMapPins, mapCards) {
-    let mapPinActive = map.querySelector(".map__pin--active")
-    for (let i = 1; i < findCreateMapPins.length; i++) {
+    let mapPinActive = window.mapjs.map.querySelector(".map__pin--active")
+    for (let i = 0; i < findCreateMapPins.length; i++) {
       findCreateMapPins[i].classList.add("hidden")
-      mapCards[i].classList.add("hidden")
+      window.mapjs.mapCards[i].classList.add("hidden")
     }
     if (mapPinActive) {
       mapPinActive.classList.remove("map__pin--active")
@@ -197,15 +197,15 @@
   }
 
   let sendDataURL = "https://24.javascript.pages.academy/keksobooking"
-  adFormAnnoucement.addEventListener("submit", function (evt) {
-    window.backend.upLoadHandler(sendDataURL, new FormData(adFormAnnoucement), function (response) {
-      map.classList.add("map--faded")
-      mapPinHiddenHandler(findCreateMapPins, mapCards)
-      adFormAnnoucement.classList.add('ad-form--disabled')
-      formElementActiveHandler(adFormAnnoucement.elements)
-      mapPinMain.style.left = mapPinMain.closest("div").offsetWidth / 2 - (mainPinWidth / 2) + "px"
-      mapPinMain.style.top = "375px"
-      adFormAnnoucement.reset()
+  window.mapjs.adFormAnnoucement.addEventListener("submit", function (evt) {
+    window.backend.upLoadHandler(sendDataURL, new FormData(window.mapjs.adFormAnnoucement), function (response) {
+      window.mapjs.map.classList.add("map--faded")
+      mapPinHiddenHandler(window.mapjs.findCreateMapPins, window.mapjs.mapCards)
+      window.mapjs.adFormAnnoucement.classList.add('ad-form--disabled')
+      formElementActiveHandler(window.mapjs.adFormAnnoucement.elements)
+      window.mapjs.mapPinMain.style.left = window.mapjs.mapPinMain.closest("div").offsetWidth / 2 - (window.mapjs.mainPinWidth / 2) + "px"
+      window.mapjs.mapPinMain.style.top = "375px"
+      window.mapjs.adFormAnnoucement.reset()
     })
     evt.preventDefault()
   })

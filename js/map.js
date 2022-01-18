@@ -1,19 +1,18 @@
 'use strict';
 
 (function () {
-  window.mapjs = {
-    changeMapPins: changeMapPins
-  }
-  window.map = document.querySelector(".map")
+  let findCreateMapPins
+  let mapCards
+  let map = document.querySelector(".map")
   let template = document.querySelector("template")
   let newTemplate = template.content.querySelector('.map__card');
   let mapPin = template.content.querySelector(".map__pin")
-  window.mapPinMain = document.querySelector(".map__pin--main")
+  let mapPinMain = document.querySelector(".map__pin--main")
   let mapFilters = document.querySelector(".map__filters")
   let listOfPins = document.querySelector(".map__pins")
-  window.adFormAnnoucement = document.querySelector(".ad-form")
+  let adFormAnnoucement = document.querySelector(".ad-form")
   let adFormFieldsets = adFormAnnoucement.querySelectorAll("fieldset")
-  window.addressInput = adFormAnnoucement.querySelector("#address")
+  let addressInput = adFormAnnoucement.querySelector("#address")
   let mapFiltersContainer = map.querySelector(".map__filters-container")
   const pinWidth = 50
   const pinHeight = 70
@@ -58,10 +57,10 @@
     }
   }
 
-  window.mainPinWidth = 64
+  const mainPinWidth = 64
   const mainPinHeight = 80
   //высчитывает и записывает в новую метку на карте координаты ее указателя(где нужно отобразить метку)
-  window.getAddressFormAnnoucement = function () { //getAddressCoords
+  function getAddressCoords () { //getAddressCoords
     let coordinatX = Math.round(mapPinMain.offsetLeft + mainPinWidth / 2)
     let coordinatY = Math.round(mapPinMain.offsetTop + mainPinHeight)
     let addressInputValue = coordinatX + ", " + coordinatY
@@ -179,7 +178,7 @@
   }
 
   //записываем значение текущих координат метки в поле "Адрес" формы при загрузке страницы
-  addressInput.value = window.getAddressFormAnnoucement()
+  addressInput.value = getAddressCoords()
   let clickPin = false
   let loadData = false
 
@@ -206,8 +205,8 @@
     let filterListObjects = window.filterPins(window.backend.listServerData);
 
     // Удаляет элементы 'Метка объявления', если они существуют
-    if (window.findCreateMapPins.length){
-      removeFragment(window.findCreateMapPins)
+    if (findCreateMapPins.length){
+      removeFragment(findCreateMapPins)
       removeFragment(mapCards)
     }
 
@@ -220,21 +219,21 @@
     createFragment(arr)
 
     //ищет созданные метки объявлений, кроме перетаскивающейся метки
-    window.findCreateMapPins = map.querySelectorAll(".map__pin:not(.map__pin--main)")
+    findCreateMapPins = map.querySelectorAll(".map__pin:not(.map__pin--main)")
 
     //создает попапы объявлений о сдаче при клике по соответствующей метке на карте
     createMapPinAnnoucements(arr)
 
     //ищет созданные попапы объявлений о сдаче
-    window.mapCards = map.querySelectorAll(".map__card")
+    mapCards = map.querySelectorAll(".map__card")
 
     //запускает обработчик событий при клике на метку карты для отрисовки соответствующего попапа объявления о сдаче
-    mapPinClickHandler(window.mapCards, window.findCreateMapPins)
+    mapPinClickHandler(mapCards, findCreateMapPins)
   }
 
   function mapActiveHandler() {
     //записывает координаты указателя метки в поле формы 'Адрес'
-    addressInput.value = window.getAddressFormAnnoucement()
+    addressInput.value = getAddressCoords()
 
     //проверка на подгрузку данных с сервера
     //проверка на первое перетаскивание метки
@@ -308,4 +307,15 @@
 
     document.addEventListener("mouseup", mouseUpHandler)
   })
+  window.mapjs = {
+    map: map,
+    mapPinMain: mapPinMain,
+    adFormAnnoucement: adFormAnnoucement,
+    addressInput: addressInput,
+    mainPinWidth: mainPinWidth,
+    findCreateMapPins: findCreateMapPins,
+    mapCards: mapCards,
+    changeMapPins: changeMapPins,
+    getAddressCoords: getAddressCoords
+  }
 })()
