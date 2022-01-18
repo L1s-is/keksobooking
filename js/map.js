@@ -244,6 +244,9 @@
       //разблокирует элементы страницы
       unblockPageElements()
 
+      //делает главную кнопку поверх остальных меток
+      mapPinMain.style.zIndex = 2
+
       //создает метки объявлений на карте по данным с сервера
       createMapElements(window.backend.listServerData)
 
