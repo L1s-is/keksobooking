@@ -203,7 +203,7 @@
 
   function changeMapPins () {
     // Фильтрует объявления и создает массив отфильтрованных объявлений
-    let filterListObjects = window.filterPins(window.backend.listObjects);
+    let filterListObjects = window.filterPins(window.backend.listServerData);
 
     // Удаляет элементы 'Метка объявления', если они существуют
     if (window.findCreateMapPins.length){
@@ -239,7 +239,7 @@
     //проверка на подгрузку данных с сервера
     //проверка на первое перетаскивание метки
     //проверка на блокировку карты(были отправлены данные по ajax)
-    if (!window.backend.listObjects) {
+    if (!window.backend.listServerData) {
       map.classList.remove("map--faded")
       /*window.backend.errorHandler("Упс! Данные не загружены")*/
     } else if (!clickPin) {
@@ -247,7 +247,7 @@
       unblockPageElements()
 
       //создает метки объявлений на карте по данным с сервера
-      createMapElements(window.backend.listObjects)
+      createMapElements(window.backend.listServerData)
 
       //изменяем значение, чтобы понимать, что первое перемещение метки произошло
       clickPin = true
