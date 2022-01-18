@@ -1,10 +1,13 @@
 "use strict";
 
 (function (){
+  let listObjects
+
   window.backend = {
     loadHandler: loadHandler,
     upLoadHandler: upLoadHandler,
-    errorHandler: errorHandler
+    errorHandler: errorHandler,
+    listObjects: listObjects
   }
 
   let getDataURL = "https://24.javascript.pages.academy/keksobooking/data"
@@ -50,8 +53,7 @@
   }
 
   function successHandler(data) {
-    console.log(data)
-    window.listObjects = data
+    window.backend.listObjects = data
   }
 
   function errorMessageHiddenHandler(){
