@@ -200,6 +200,8 @@
   window.mapjs.adFormAnnoucement.addEventListener("submit", function (evt) {
     window.backend.upLoadHandler(sendDataURL, new FormData(window.mapjs.adFormAnnoucement), function (response) {
       window.mapjs.map.classList.add("map--faded")
+      window.mapjs.findCreateMapPins = window.mapjs.map.querySelectorAll(".map__pin:not(.map__pin--main)")
+      window.mapjs.mapCards = window.mapjs.map.querySelectorAll(".map__card")
       mapPinHiddenHandler(window.mapjs.findCreateMapPins, window.mapjs.mapCards)
       window.mapjs.adFormAnnoucement.classList.add('ad-form--disabled')
       formElementActiveHandler(window.mapjs.adFormAnnoucement.elements)
