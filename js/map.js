@@ -239,8 +239,7 @@
     //проверка на первое перетаскивание метки
     //проверка на блокировку карты(были отправлены данные по ajax)
     if (!window.backend.listServerData) {
-      map.classList.remove("map--faded")
-      /*window.backend.errorHandler("Упс! Данные не загружены")*/
+      window.backend.errorHandler("Упс! Данные еще не загружены")
     } else if (!clickPin) {
       //разблокирует элементы страницы
       unblockPageElements()

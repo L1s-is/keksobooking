@@ -63,7 +63,7 @@
     successMessage.classList.remove("hidden")
     let successMessageBtn = document.querySelector(".button--success")
     successMessageBtn.addEventListener("click", hideSuccessMessage)
-    setTimeout(hideSuccessMessage, 3000)
+    setTimeout(hideSuccessMessage, 5000)
   }
 
   function hideSuccessMessage(){
