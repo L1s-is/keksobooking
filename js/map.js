@@ -73,7 +73,7 @@
   }
 
   //убирает с элементов формы атрибут disabled
-  function formElementActiveHandler(arr) {
+  function unblockFormElements(arr) {
     for (let i = 0; i < arr.length; i++) {
       arr[i].disabled = false
     }
@@ -190,8 +190,8 @@
     formAnnoucementActiveHandler()
 
     //снимаем значение disabled с элементов формы
-    formElementActiveHandler(adFormAnnoucement.elements)
-    formElementActiveHandler(mapFilters.elements)
+    unblockFormElements(adFormAnnoucement.elements)
+    unblockFormElements(mapFilters.elements)
   }
 
   function hideMapElements(arr){
