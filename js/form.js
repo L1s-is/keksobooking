@@ -79,7 +79,7 @@
   }
 
   //меняет значение минимальной цены и плейсхолдера для разных типов жилья
-  function minPriceValueHandler(adFormType, adFormPrice) {
+  function changeValueMinPrice (adFormType, adFormPrice) {
     switch (adFormType.value) {
       case "bungalo":
         adFormPrice.min = priceTypes.bungalo
@@ -103,10 +103,10 @@
     }
   }
 
-  minPriceValueHandler(adFormType, adFormPrice)
+  changeValueMinPrice(adFormType, adFormPrice)
 
   adFormType.addEventListener("input", function () {
-    minPriceValueHandler(adFormType, adFormPrice)
+    changeValueMinPrice(adFormType, adFormPrice)
     if (!adFormPrice.validity.valueMissing) {
       adFormPrice.checkValidity()
       errorValidHandler(adFormPrice)
@@ -120,43 +120,43 @@
     roomNumberChangeValueHandler(adFormRoomNumber, adFormCapacity)
   })
 
-  function capacityOptionsHiddenHandler(options) {
+  function hideCapacityOptions(options) {
     for (let i = 0; i < options.length; i++) {
       options[i].classList.add("hidden")
     }
   }
 
-  function capacityOptionsVisibleHandler(option) {
+  function showCapacityOptions(option) {
     option.classList.remove("hidden")
   }
 
   //удаление неподходящих элементов поля "колличество гостей" (каждому гостю не менее, чем одна комната, выбор "Не для гостей" при колличестве комнат = 100)
   function roomNumberChangeValueHandler(adFormRoomNumber, adFormCapacity) {
     let capacityOptions = adFormCapacity.querySelectorAll("option")
-    capacityOptionsHiddenHandler(capacityOptions)
+    hideCapacityOptions(capacityOptions)
     switch (adFormRoomNumber.value) {
       case "100":
-        capacityOptionsVisibleHandler(capacityOptions[3])
+        showCapacityOptions(capacityOptions[3])
         capacityOptions[3].selected = true
         break
       case "1":
-        capacityOptionsVisibleHandler(capacityOptions[2])
+        showCapacityOptions(capacityOptions[2])
         capacityOptions[2].selected = true
         break
       case "2":
-        capacityOptionsVisibleHandler(capacityOptions[1])
-        capacityOptionsVisibleHandler(capacityOptions[2])
+        showCapacityOptions(capacityOptions[1])
+        showCapacityOptions(capacityOptions[2])
         capacityOptions[1].selected = true
         break
       case "3":
         for (let i = 0; i < capacityOptions.length - 1; i++) {
-          capacityOptionsVisibleHandler(capacityOptions[i])
+          showCapacityOptions(capacityOptions[i])
         }
         capacityOptions[0].selected = true
         break
       default:
         for (let i = 0; i < capacityOptions.length; i++) {
-          capacityOptionsVisibleHandler(capacityOptions[i])
+          showCapacityOptions(capacityOptions[i])
         }
         capacityOptions[0].selected = true
     }
@@ -178,18 +178,18 @@
   })
 
   //блокирует поля формы при успешной отправке данных на сервер (по ТЗ сайт возвращается в начальное положение без перезагрузки страницы)
-  function formElementActiveHandler(arr) {
+  function blockFormElements(arr) {
     for (let i = 0; i < arr.length; i++) {
       arr[i].disabled = true
     }
   }
 
   //скрывает элементы с карты
-  function mapPinHiddenHandler(findCreateMapPins, mapCards) {
+  function hideMapPins(findCreateMapPins, mapCards) {
     let mapPinActive = window.mapjs.map.querySelector(".map__pin--active")
     for (let i = 0; i < findCreateMapPins.length; i++) {
       findCreateMapPins[i].classList.add("hidden")
-      window.mapjs.mapCards[i].classList.add("hidden")
+      mapCards[i].classList.add("hidden")
     }
     if (mapPinActive) {
       mapPinActive.classList.remove("map__pin--active")
@@ -202,9 +202,9 @@
       window.mapjs.map.classList.add("map--faded")
       window.mapjs.findCreateMapPins = window.mapjs.map.querySelectorAll(".map__pin:not(.map__pin--main)")
       window.mapjs.mapCards = window.mapjs.map.querySelectorAll(".map__card")
-      mapPinHiddenHandler(window.mapjs.findCreateMapPins, window.mapjs.mapCards)
+      hideMapPins(window.mapjs.findCreateMapPins, window.mapjs.mapCards)
       window.mapjs.adFormAnnoucement.classList.add('ad-form--disabled')
-      formElementActiveHandler(window.mapjs.adFormAnnoucement.elements)
+      blockFormElements(window.mapjs.adFormAnnoucement.elements)
       window.mapjs.mapPinMain.style.left = window.mapjs.mapPinMain.closest("div").offsetWidth / 2 - (window.mapjs.mainPinWidth / 2) + "px"
       window.mapjs.mapPinMain.style.top = "375px"
       window.mapjs.adFormAnnoucement.reset()
