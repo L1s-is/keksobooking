@@ -90,7 +90,7 @@
       }
     })
     xhr.open("Post", url)
-    xhr.send()
+    xhr.send(data)
   }
 })()
 
