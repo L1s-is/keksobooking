@@ -578,6 +578,7 @@ fieldset {
 
 .ad-form-header__drop-zone:hover {
   color: #ff5635;
+  border-color: #ffaa99;
 }
 
 .ad-form-header__drop-zone:focus,
@@ -768,8 +769,9 @@ fieldset {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  /*-ms-flex-wrap: wrap;
+      flex-wrap: wrap;*/
+  position: relative;
 }
 
 .ad-form__upload {
@@ -806,24 +808,72 @@ fieldset {
 
 .ad-form__drop-zone:hover {
   color: #ff5635;
+  border-color: #ffaa99;
 }
 
 .ad-form__drop-zone:focus,
 .ad-form__input:focus + .ad-form__drop-zone {
   color: #ff5635;
-  -webkit-box-shadow: 0 0 2px 2px #ff6547;
-          box-shadow: 0 0 2px 2px #ff6547;
+  -webkit-box-shadow: 0 0 2px 2px #ffaa99;
+          box-shadow: 0 0 2px 2px #ffaa99;
 }
 
 .ad-form__photo {
-  margin-right: 10px;
-  margin-bottom: 10px;
+  position: relative;
 
   width: 70px;
   height: 70px;
 
   background-color: #e4e4de;
   border-radius: 5px;
+}
+
+.ad-form__photo--add {
+  position: relative;
+  cursor: pointer;
+}
+
+.ad-form__photo--add::before,
+.ad-form__photo--add::after{
+  content: "";
+  display: block;
+  position: absolute;
+  top: calc(50% - 2px);
+  left: calc(50% - 12px);
+  border-radius: 2px;
+  width: 24px;
+  height: 4px;
+  background-color: #c7c7c7;
+}
+
+.ad-form__photo--add:hover::before,
+.ad-form__photo--add:hover::after{
+  transition: background-color 0.1s ease-in-out;
+  background-color: #ff6547;
+}
+
+.ad-form__photo--add::after{
+  width: 4px;
+  height: 24px;
+  top: calc(50% - 12px);
+  left: calc(50% - 2px);
+}
+
+.ad-form__photo--add:hover{
+  border: 1px solid #ffaa99;
+}
+
+.ad-form__photo--add:active,
+.ad-form__photo--add:focus{
+  outline: none;
+  -webkit-box-shadow: 0 0 2px 2px #ff6547;
+  box-shadow: 0 0 2px 2px #ff6547;
+}
+
+.ad-form__photo--storage{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .ad-form__element--submit {
@@ -1264,14 +1314,22 @@ fieldset {
     transform: translateX(10px);
   }
 }
+
 .ad-form__element--error:invalid{
   animation: 1.2s ease-in-out validation-error;
   border: 2px solid red;
   background-color: rgba(255,0,0,0.3);
   transition: 0.5s;
 }
+
 .ad-form__element--error:invalid:focus{
   border: 2px solid red;
   background-color: rgba(255,0,0,0.3);
   transition: 0.5s;
+}
+
+.drop-zone--active {
+  transition: all 0.3s ease-in-out;
+  color: #ff5635;
+  border-color: #ffaa99;
 }
