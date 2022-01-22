@@ -90,6 +90,15 @@
       }
     })
     xhr.open("Post", url)
+    for (let i=0; i<=window.file.k; i++){
+
+      data.append('photos[' + i + ']', window.file.formDataPhotos.get('file[' + i + ']'), "photos"+ i)
+      console.log(data.get('photos[' + i + ']'))
+      console.log(window.file.formDataPhotos.get('file[' + i + ']'))
+      console.log(i)
+    }
+    //data.append('photos[]', window.file.formDataPhotos.get('file[]'), "photos")
+    //console.log(data.getAll('photos[]'))
     xhr.send(data)
   }
 })()
