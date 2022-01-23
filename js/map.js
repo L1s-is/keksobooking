@@ -318,6 +318,7 @@
     findCreateMapPins: findCreateMapPins,
     mapCards: mapCards,
     changeMapPins: changeMapPins,
-    getAddressCoords: getAddressCoords
+    getAddressCoords: getAddressCoords,
+    removeFragment: removeFragment
   }
 })()
