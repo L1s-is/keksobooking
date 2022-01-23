@@ -27,7 +27,7 @@
     dropAreaAvatar.addEventListener(eventName, unhighlightDropZone)
   })
 
-  function preventDefaults (evt) {
+  function preventDefaults(evt) {
     evt.preventDefault()
     evt.stopPropagation()
   }
@@ -41,7 +41,7 @@
   }
 
   //добавление выбранного аватара в превью
-  function prewiewAvatar (files) {
+  function prewiewAvatar(files) {
     let file = files[0]
     let fileName = file.name.toLowerCase()
     let coincidence = fileTypes.some(element => fileName.endsWith(element))
@@ -67,61 +67,62 @@
   dropAreaPhotos.addEventListener("drop", defineLoadMethod)
   fileChooserPhotos.addEventListener("change", defineLoadMethod)
 
-function defineLoadMethod(evt) {
-  let dt = evt.dataTransfer
-  let files = dt ? dt.files : evt.target.files
+  function defineLoadMethod(evt) {
+    let dt = evt.dataTransfer
+    let files = dt ? dt.files : evt.target.files
 
-  if (evt.target === dropAreaPhotos || evt.target === fileChooserPhotos) {
-    handleFiles(files)
-  } else {
-    prewiewAvatar(files)
+    if (evt.target === dropAreaPhotos || evt.target === fileChooserPhotos) {
+      handleFiles(files)
+    } else {
+      prewiewAvatar(files)
+    }
   }
-}
 
-function handleFiles(files) {
-  files = [...files]
-  files.forEach(previewPhotos)
-}
-
-function previewPhotos(file) {
-  let fileName = file.name.toLowerCase()
-  let coincidence = fileTypes.some(element => fileName.endsWith(element))
-
-  if (coincidence) {
-    let reader = new FileReader()
-
-    reader.addEventListener("load", function () {
-      let img = document.createElement("img")
-      img.src = reader.result
-      img.classList.add("ad-form__photo")
-      let before = document.querySelector('.ad-form__photo--add')
-      document.querySelector('.ad-form__photo--storage').insertBefore(img, before)
-    })
-    uploadFile(file)
-
-    reader.readAsDataURL(file)
-  } else {
-    window.backend.errorHandler("Выберите формат изображения jpg, jpeg или png")
+  function handleFiles(files) {
+    files = [...files]
+    files.forEach(previewPhotos)
   }
-  fileChooserPhotos.value = ""
-}
 
-let formDataPhotos = new FormData()
-let k=0
-function uploadFile(file, i) {
-  let url = 'https://api.cloudinary.com/v1_1/joezimim007/image/upload'
-  let xhr = new XMLHttpRequest()
+  function previewPhotos(file) {
+    let fileName = file.name.toLowerCase()
+    let coincidence = fileTypes.some(element => fileName.endsWith(element))
 
-  formDataPhotos.append('file[' + k + ']', file)
-  console.log(formDataPhotos.get('file[' + k + ']'))
-  k++
-  //xhr.send(formData)
-}
+    if (coincidence) {
+      let reader = new FileReader()
 
-window.file = {
+      reader.addEventListener("load", function () {
+        let img = document.createElement("img")
+        img.src = reader.result
+        img.classList.add("ad-form__photo")
+        let before = document.querySelector('.ad-form__photo--add')
+        document.querySelector('.ad-form__photo--storage').insertBefore(img, before)
+      })
+      uploadFile(file)
+
+      reader.readAsDataURL(file)
+    } else {
+      window.backend.errorHandler("Выберите формат изображения jpg, jpeg или png")
+    }
+    fileChooserPhotos.value = ""
+  }
+
+  let formDataPhotos = new FormData()
+  let k = 0
+
+  function uploadFile(file, i) {
+    let url = 'https://api.cloudinary.com/v1_1/joezimim007/image/upload'
+    let xhr = new XMLHttpRequest()
+
+    formDataPhotos.append('file[' + k + ']', file)
+    console.log(formDataPhotos.get('file[' + k + ']'))
+    k++
+    //xhr.send(formData)
+  }
+
+  window.file = {
     k: k,
-  prewiewUserAvatar: prewiewUserAvatar,
-  defaultUserAvatar: defaultUserAvatar,
-  formDataPhotos: formDataPhotos
-}
+    prewiewUserAvatar: prewiewUserAvatar,
+    defaultUserAvatar: defaultUserAvatar,
+    formDataPhotos: formDataPhotos
+  }
 })()
