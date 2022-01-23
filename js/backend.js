@@ -90,15 +90,17 @@
       }
     })
     xhr.open("Post", url)
-    for (let i=0; i<=window.file.k; i++){
 
+    let i = 0
+    for (let pair of window.file.formDataPhotos.entries()) {
       data.append('photos[' + i + ']', window.file.formDataPhotos.get('file[' + i + ']'), "photos"+ i)
-      console.log(data.get('photos[' + i + ']'))
-      console.log(window.file.formDataPhotos.get('file[' + i + ']'))
-      console.log(i)
+      i++
     }
-    //data.append('photos[]', window.file.formDataPhotos.get('file[]'), "photos")
-    //console.log(data.getAll('photos[]'))
+
+    for (var value of data.values()) {
+      console.log(value);
+    }
+
     xhr.send(data)
   }
 })()

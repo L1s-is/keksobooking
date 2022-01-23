@@ -103,33 +103,23 @@ function previewPhotos(file) {
     reader.readAsDataURL(file)
   } else {
     window.backend.errorHandler("Выберите формат изображения jpg, jpeg или png")
-    fileChooserAvatar.value = ""
   }
+  fileChooserPhotos.value = ""
 }
+
 let formDataPhotos = new FormData()
 let k=0
 function uploadFile(file, i) {
   let url = 'https://api.cloudinary.com/v1_1/joezimim007/image/upload'
   let xhr = new XMLHttpRequest()
 
-  /*xhr.open('POST', url, true)
-  xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest')
-
-  formData.append('upload_preset', 'ujpu6gyk')*/
   formDataPhotos.append('file[' + k + ']', file)
-  /*for (var value of formDataPhotos.values()) {
-    console.log(value);
-  }
-  for (var key of formDataPhotos.keys()) {
-    console.log(key);
-  }*/
   console.log(formDataPhotos.get('file[' + k + ']'))
   k++
   //xhr.send(formData)
 }
 
 window.file = {
-    k: k,
   formDataPhotos: formDataPhotos
 }
 })()
