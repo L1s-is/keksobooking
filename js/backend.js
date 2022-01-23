@@ -82,6 +82,7 @@
         case 200:
           successHandler(xhr.response)
           showSuccessMessage()
+          window.file.formDataPhotos = new FormData()
           break
         default:
           errorHandler("Данные не отправлены, попробуйте позднее")
@@ -89,18 +90,21 @@
           break
       }
     })
-    xhr.open("Post", url)
 
     let i = 0
     for (let pair of window.file.formDataPhotos.entries()) {
-      data.append('photos[' + i + ']', window.file.formDataPhotos.get('file[' + i + ']'), "photos"+ i)
+      data.append('photos[' + i + ']', window.file.formDataPhotos.get(pair[0]), "photos"+ i)
       i++
     }
 
-    for (var value of data.values()) {
-      console.log(value);
+    //удаляет ключи с пустыми значениями
+    for (let pair of data.entries()) {
+      if (!pair[1]){
+        data.delete(pair[0])
+      }
     }
 
+    xhr.open("Post", url)
     xhr.send(data)
   }
 })()
