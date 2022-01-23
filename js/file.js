@@ -5,8 +5,8 @@
   let fileChooserPhotos = document.querySelector(".ad-form__input")
   const dropAreaAvatar = document.querySelector(".ad-form-header__drop-zone")
   const dropAreaPhotos = document.querySelector(".ad-form__drop-zone")
-  let prewiew = document.querySelector(".ad-form-header__preview img")
-  const defaultImg = prewiew.src
+  let prewiewUserAvatar = document.querySelector(".ad-form-header__preview img")
+  const defaultUserAvatar = prewiewUserAvatar.src
   const fileTypes = ["jpg", "png", "jpeg"]
 
 // перебираем массив возможных событий дроп и вешаем обработчик, если событие произошло:
@@ -50,14 +50,14 @@
       let reader = new FileReader()
 
       reader.addEventListener("load", function () {
-        prewiew.src = reader.result
+        prewiewUserAvatar.src = reader.result
       })
 
       reader.readAsDataURL(file)
     } else {
       window.backend.errorHandler("Выберите формат изображения jpg, jpeg или png")
       fileChooserAvatar.value = ""
-      prewiew.src = defaultImg
+      prewiewUserAvatar.src = defaultUserAvatar
     }
   }
 
@@ -80,7 +80,6 @@ function defineLoadMethod(evt) {
 
 function handleFiles(files) {
   files = [...files]
-  //files.forEach(uploadFile)
   files.forEach(previewPhotos)
 }
 
@@ -120,6 +119,9 @@ function uploadFile(file, i) {
 }
 
 window.file = {
+    k: k,
+  prewiewUserAvatar: prewiewUserAvatar,
+  defaultUserAvatar: defaultUserAvatar,
   formDataPhotos: formDataPhotos
 }
 })()
