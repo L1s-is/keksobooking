@@ -109,7 +109,7 @@
   let formDataPhotos = new FormData()
   let k = 0
 
-  function uploadFile(file, i) {
+  function uploadFile(file) {
     let url = 'https://api.cloudinary.com/v1_1/joezimim007/image/upload'
     let xhr = new XMLHttpRequest()
 
