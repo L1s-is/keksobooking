@@ -196,36 +196,48 @@
     }
   }
 
-  function resetPageElements () {
+  function resetPageElements (response) {
+    //сброс елементов карты
+    resetMapElements()
 
+    //сброс элементов формы
+    resetFormElements()
+
+    //сброс превью фото и аватара
+    resetAdPhotos()
+
+    window.mapjs.adFormAnnoucement.reset()
+  }
+
+  function resetMapElements () {
+    window.mapjs.map.classList.add("map--faded")
+    window.mapjs.findCreateMapPins = window.mapjs.map.querySelectorAll(".map__pin:not(.map__pin--main)")
+    window.mapjs.mapCards = window.mapjs.map.querySelectorAll(".map__card")
+    hideMapPins(window.mapjs.findCreateMapPins, window.mapjs.mapCards)
+    window.mapjs.mapPinMain.style.left = window.mapjs.mapPinMain.closest("div").offsetWidth / 2 - (window.mapjs.mainPinWidth / 2) + "px"
+    window.mapjs.mapPinMain.style.top = "375px"
+  }
+
+  function resetFormElements () {
+    window.mapjs.adFormAnnoucement.classList.add('ad-form--disabled')
+    blockFormElements(window.mapjs.adFormAnnoucement.elements)
+  }
+
+  function resetAdPhotos () {
+    window.file.prewiewUserAvatar.src = window.file.defaultUserAvatar
+    window.file.k = 0
+    let prewiewPhotos = document.querySelectorAll(".ad-form__photo:not(.ad-form__photo--add)")
+    if (prewiewPhotos.length) {
+      window.mapjs.removeFragment(prewiewPhotos)
+    }
   }
 
   let sendDataURL = "https://24.javascript.pages.academy/keksobooking"
   window.mapjs.adFormAnnoucement.addEventListener("submit", function (evt) {
-    window.backend.upLoadHandler(sendDataURL, new FormData(window.mapjs.adFormAnnoucement), function (response) {
-      //сброс карты
-      window.mapjs.map.classList.add("map--faded")
-      window.mapjs.findCreateMapPins = window.mapjs.map.querySelectorAll(".map__pin:not(.map__pin--main)")
-      window.mapjs.mapCards = window.mapjs.map.querySelectorAll(".map__card")
-      hideMapPins(window.mapjs.findCreateMapPins, window.mapjs.mapCards)
-      window.mapjs.mapPinMain.style.left = window.mapjs.mapPinMain.closest("div").offsetWidth / 2 - (window.mapjs.mainPinWidth / 2) + "px"
-      window.mapjs.mapPinMain.style.top = "375px"
-
-      //сброс формы
-      window.mapjs.adFormAnnoucement.classList.add('ad-form--disabled')
-      blockFormElements(window.mapjs.adFormAnnoucement.elements)
-
-      //сброс превью фото и аватара
-      window.file.prewiewUserAvatar.src = window.file.defaultUserAvatar
-      window.file.k = 0
-      let prewiewPhotos = document.querySelectorAll(".ad-form__photo:not(.ad-form__photo--add)")
-      if (prewiewPhotos.length) {
-        window.mapjs.removeFragment(prewiewPhotos)
-      }
-
-      window.mapjs.adFormAnnoucement.reset()
-    })
+    window.backend.upLoadHandler(sendDataURL, new FormData(window.mapjs.adFormAnnoucement), resetPageElements)
     evt.preventDefault()
   })
+
+  window.mapjs.adFormAnnoucement.addEventListener("reset", resetAdPhotos)
 })()
 
