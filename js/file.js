@@ -110,13 +110,10 @@
   let k = 0
 
   function uploadFile(file) {
-    let url = 'https://api.cloudinary.com/v1_1/joezimim007/image/upload'
     let xhr = new XMLHttpRequest()
 
     formDataPhotos.append('file[' + k + ']', file)
-    console.log(formDataPhotos.get('file[' + k + ']'))
     k++
-    //xhr.send(formData)
   }
 
   window.file = {
