@@ -260,63 +260,58 @@
       mapPinVisibleHandler(findCreateMapPins)
     }
   }
-  ;["mousedown", "touchstart"].forEach(eventName => {
-    mapPinMain.addEventListener(eventName, function (evt) {
-      //проверка, что данные не загружены
-      if (!loadData) {
-        window.backend.loadHandler()
-        loadData = true
-      }
 
-      let startCoordinates = {
-        x: evt.clientX,
-        y: evt.clientY
-      }
+  mapPinMain.addEventListener("pointerdown", function (evt) {
+    evt.preventDefault()
+    //проверка, что данные не загружены
+    if (!loadData) {
+      window.backend.loadHandler()
+      loadData = true
+    }
 
-      function mouseMoveHandler(moveEvt) {
-        //высчитываем новое положение метки
-        let shiftCoordinates = {
-          x: startCoordinates.x - moveEvt.clientX,
-          y: startCoordinates.y - moveEvt.clientY
-        }
-        startCoordinates = {
-          x: moveEvt.clientX,
-          y: moveEvt.clientY
-        }
-        //условие, чтобы метка не выходила за пределы карты
-        if (mapPinMain.offsetLeft < 0) {
-          mapPinMain.style.left = 1 + "px"
-        } else if (mapPinMain.offsetTop < 90) {
-          mapPinMain.style.top = 91 + "px"
-        } else if (mapPinMain.offsetLeft + mainPinWidth > mapPinMain.parentElement.clientWidth) {
-          mapPinMain.style.left = (mapPinMain.parentElement.clientWidth - mainPinWidth - 1) + "px"
-        } else if (mapPinMain.offsetTop + mainPinHeight > mapPinMain.parentElement.clientHeight) {
-          mapPinMain.style.top = (mapPinMain.parentElement.clientHeight - mainPinHeight - 1) + "px"
-        } else {
-          mapPinMain.style.left = (mapPinMain.offsetLeft - shiftCoordinates.x) + "px"
-          mapPinMain.style.top = (mapPinMain.offsetTop - shiftCoordinates.y) + "px"
-        }
-      }
-      ;["mousemove", "touchmove"].forEach(eventName => {
-        document.addEventListener(eventName, mouseMoveHandler)
-      })
+    let startCoordinates = {
+      x: evt.clientX,
+      y: evt.clientY
+    }
 
-      function mouseUpHandler(upEvt) {
-        //делаем элементы страницы активными, если это не так
-        mapActiveHandler()
-        ;["mousemove", "touchmove"].forEach(eventName => {
-          document.removeEventListener(eventName, mouseMoveHandler)
-        })
-        ;["mouseup", "touchend"].forEach(eventName => {
-          document.removeEventListener(eventName, mouseUpHandler)
-        })
+    function mouseMoveHandler(moveEvt) {
+      //высчитываем новое положение метки
+      let shiftCoordinates = {
+        x: startCoordinates.x - moveEvt.clientX,
+        y: startCoordinates.y - moveEvt.clientY
       }
+      startCoordinates = {
+        x: moveEvt.clientX,
+        y: moveEvt.clientY
+      }
+      //условие, чтобы метка не выходила за пределы карты
+      if (mapPinMain.offsetLeft < 0) {
+        mapPinMain.style.left = 1 + "px"
+      } else if (mapPinMain.offsetTop < 90) {
+        mapPinMain.style.top = 91 + "px"
+      } else if (mapPinMain.offsetLeft + mainPinWidth > mapPinMain.parentElement.clientWidth) {
+        mapPinMain.style.left = (mapPinMain.parentElement.clientWidth - mainPinWidth - 1) + "px"
+      } else if (mapPinMain.offsetTop + mainPinHeight > mapPinMain.parentElement.clientHeight) {
+        mapPinMain.style.top = (mapPinMain.parentElement.clientHeight - mainPinHeight - 1) + "px"
+      } else {
+        mapPinMain.style.left = (mapPinMain.offsetLeft - shiftCoordinates.x) + "px"
+        mapPinMain.style.top = (mapPinMain.offsetTop - shiftCoordinates.y) + "px"
+      }
+    }
 
-      ;["mouseup", "touchend"].forEach(eventName => {
-        document.addEventListener(eventName, mouseUpHandler)
-      })
-    })
+    document.addEventListener("pointermove", mouseMoveHandler)
+
+    function mouseUpHandler(upEvt) {
+      upEvt.preventDefault()
+      //делаем элементы страницы активными, если это не так
+      mapActiveHandler()
+      document.removeEventListener("pointermove", mouseMoveHandler)
+      document.removeEventListener("pointerup", mouseUpHandler)
+    }
+
+    document.addEventListener("pointerup", mouseUpHandler)
   })
+
   window.mapjs = {
     map: map,
     mapPinMain: mapPinMain,

@@ -224,7 +224,7 @@ fieldset {
 .map__pin--main {
   width: 65px;
   height: 65px;
-
+  touch-action: none;
   cursor: move;
 }
 
