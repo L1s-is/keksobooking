@@ -1,6 +1,6 @@
 "use strict";
 
-(function (){
+(function () {
   let listServerData
 
   window.backend = {
@@ -59,22 +59,23 @@
   }
 
   let successMessage = document.querySelector(".success")
-  function showSuccessMessage () {
+
+  function showSuccessMessage() {
     successMessage.classList.remove("hidden")
     let successMessageBtn = document.querySelector(".button--success")
     successMessageBtn.addEventListener("click", hideSuccessMessage)
     setTimeout(hideSuccessMessage, 5000)
   }
 
-  function hideSuccessMessage(){
+  function hideSuccessMessage() {
     successMessage.classList.add("hidden")
   }
 
-  function hideErrorMessage(){
+  function hideErrorMessage() {
     errorMessage.classList.add("hidden")
   }
 
-  function upLoadHandler (url, data, successHandler) {
+  function upLoadHandler(url, data, successHandler) {
     let xhr = new XMLHttpRequest()
     xhr.responseType = "json"
     xhr.addEventListener("load", function () {
@@ -92,13 +93,13 @@
 
     let i = 0
     for (let key of window.file.formDataPhotos.keys()) {
-      data.append('photos[' + i + ']', window.file.formDataPhotos.get(key), "photos"+ i)
+      data.append('photos[' + i + ']', window.file.formDataPhotos.get(key), "photos" + i)
       i++
     }
 
     //удаляет ключи с пустыми значениями
     for (let pair of data.entries()) {
-      if (!pair[1]){
+      if (!pair[1]) {
         data.delete(pair[0])
       }
     }

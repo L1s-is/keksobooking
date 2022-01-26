@@ -59,8 +59,9 @@
 
   const mainPinWidth = 64
   const mainPinHeight = 80
+
   //высчитывает и записывает в новую метку на карте координаты ее указателя(где нужно отобразить метку)
-  function getAddressCoords () { //getAddressCoords
+  function getAddressCoords() {
     let coordinatX = Math.round(mapPinMain.offsetLeft + mainPinWidth / 2)
     let coordinatY = Math.round(mapPinMain.offsetTop + mainPinHeight)
     let addressInputValue = coordinatX + ", " + coordinatY
@@ -162,7 +163,7 @@
         PopupInactiveHandler(mapCards[i], findCreateMapPins[i])
       })
 
-      window.addEventListener("keydown", function (evt){
+      window.addEventListener("keydown", function (evt) {
         if (evt.keyCode === 27) {
           PopupInactiveHandler(mapCards[i], findCreateMapPins[i])
         }
@@ -194,18 +195,18 @@
     unblockFormElements(mapFilters.elements)
   }
 
-  function hideMapElements(arr){
+  function hideMapElements(arr) {
     for (let i = 1; i < arr.length; i++) {
       arr[i].classList.add("hidden")
     }
   }
 
-  function changeMapPins () {
+  function changeMapPins() {
     // Фильтрует объявления и создает массив отфильтрованных объявлений
     let filterListObjects = window.filterPins(window.backend.listServerData);
 
     // Удаляет элементы 'Метка объявления', если они существуют
-    if (findCreateMapPins.length){
+    if (findCreateMapPins.length) {
       removeFragment(findCreateMapPins)
       removeFragment(mapCards)
     }

@@ -30,8 +30,8 @@
   }
 
   //Фильтрует объявления по интервалу цен
-  function filterByPrice (arr, filterValue) {
-    return arr.filter( element => {
+  function filterByPrice(arr, filterValue) {
+    return arr.filter(element => {
       let priceInterval = {
         'low': element.offer.price < PriceValues.Middle_start,
         'middle': element.offer.price >= PriceValues.Middle_start && element.offer.price <= PriceValues.Middle_final,
@@ -57,8 +57,8 @@
     window.debounce(window.mapjs.changeMapPins, Debounce_interval)
   })
 
- //Возвращает отфильтрованный массив объявлений.
-  function filterPins (ads) {
+  //Возвращает отфильтрованный массив объявлений.
+  function filterPins(ads) {
     filteredAds = ads.slice()
 
     // Формирует массив из фильтров, которые были применены (фильтр был применен,

@@ -79,7 +79,7 @@
   }
 
   //меняет значение минимальной цены и плейсхолдера для разных типов жилья
-  function changeValueMinPrice (adFormType, adFormPrice) {
+  function changeValueMinPrice(adFormType, adFormPrice) {
     switch (adFormType.value) {
       case "bungalo":
         adFormPrice.min = priceTypes.bungalo
@@ -196,7 +196,7 @@
     }
   }
 
-  function resetPageElements (response) {
+  function resetPageElements(response) {
     //сброс елементов карты
     resetMapElements()
 
@@ -209,7 +209,7 @@
     window.mapjs.adFormAnnoucement.reset()
   }
 
-  function resetMapElements () {
+  function resetMapElements() {
     window.mapjs.map.classList.add("map--faded")
     window.mapjs.findCreateMapPins = window.mapjs.map.querySelectorAll(".map__pin:not(.map__pin--main)")
     window.mapjs.mapCards = window.mapjs.map.querySelectorAll(".map__card")
@@ -218,12 +218,12 @@
     window.mapjs.mapPinMain.style.top = "375px"
   }
 
-  function resetFormElements () {
+  function resetFormElements() {
     window.mapjs.adFormAnnoucement.classList.add('ad-form--disabled')
     blockFormElements(window.mapjs.adFormAnnoucement.elements)
   }
 
-  function resetAdPhotos () {
+  function resetAdPhotos() {
     window.file.prewiewUserAvatar.src = window.file.defaultUserAvatar
     window.file.k = 0
     let prewiewPhotos = document.querySelectorAll(".ad-form__photo:not(.ad-form__photo--add)")
