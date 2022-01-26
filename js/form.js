@@ -230,6 +230,10 @@
     if (prewiewPhotos.length) {
       window.mapjs.removeFragment(prewiewPhotos)
     }
+
+    for (let key of window.file.formDataPhotos.keys()) {
+      window.file.formDataPhotos.delete(key)
+    }
   }
 
   let sendDataURL = "https://24.javascript.pages.academy/keksobooking"

@@ -82,7 +82,6 @@
         case 200:
           successHandler(xhr.response)
           showSuccessMessage()
-          window.file.formDataPhotos = new FormData()
           break
         default:
           errorHandler("Данные не отправлены, попробуйте позднее")
@@ -92,8 +91,8 @@
     })
 
     let i = 0
-    for (let pair of window.file.formDataPhotos.entries()) {
-      data.append('photos[' + i + ']', window.file.formDataPhotos.get(pair[0]), "photos"+ i)
+    for (let key of window.file.formDataPhotos.keys()) {
+      data.append('photos[' + i + ']', window.file.formDataPhotos.get(key), "photos"+ i)
       i++
     }
 
