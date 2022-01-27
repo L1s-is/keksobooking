@@ -261,6 +261,7 @@
       mapPinVisibleHandler(findCreateMapPins)
     }
   }
+
   ;["pointerdown", "click"].forEach(eventName => {
     mapPinMain.addEventListener(eventName, function (evt) {
       evt.preventDefault()
@@ -285,6 +286,7 @@
           x: moveEvt.clientX,
           y: moveEvt.clientY
         }
+
         //условие, чтобы метка не выходила за пределы карты
         if (mapPinMain.offsetLeft < 0) {
           mapPinMain.style.left = 1 + "px"
@@ -299,17 +301,16 @@
           mapPinMain.style.top = (mapPinMain.offsetTop - shiftCoordinates.y) + "px"
         }
       }
-      ;["pointermove"].forEach(eventName => {
-        document.addEventListener(eventName, mouseMoveHandler)
-      })
+
+      document.addEventListener("pointermove", mouseMoveHandler)
 
       function mouseUpHandler(upEvt) {
         upEvt.preventDefault()
         //делаем элементы страницы активными, если это не так
         mapActiveHandler()
-        ;["pointermove"].forEach(eventName => {
-          document.removeEventListener(eventName, mouseMoveHandler)
-        })
+
+        document.removeEventListener("pointermove", mouseMoveHandler)
+
         ;["pointerup", "click"].forEach(eventName => {
           document.removeEventListener(eventName, mouseUpHandler)
         })
@@ -320,6 +321,7 @@
       })
     })
   })
+
   window.mapjs = {
     map: map,
     mapPinMain: mapPinMain,
