@@ -43,7 +43,12 @@
 
   //Фильтрует объявления по характеристикам жилья
   function filterByFeatures(arr, filterValue) {
-    return arr.filter(element => element.offer.features.indexOf(featureValue) >= 0)
+    return arr.filter(element => {
+      if (element.offer.features) {
+        return element.offer.features.indexOf(filterValue) >= 0
+      }
+      return false
+    })
   }
 
   let listNameToFilter = {
@@ -68,8 +73,7 @@
     })
 
     // Формирует массив из выбранных характеристик объявления
-    let checkedFeatures = Array.from(filtersContainer.querySelectorAll('.map__filter-set input[name="features"]:checked'));
-
+    let checkedFeatures = Array.from(filtersContainer.querySelectorAll('input[name="features"]:checked'));
     // Фильтрует объявления по каждому примененному фильтру
     appliedFilters.forEach(function (filter) {
       filteredAds = listNameToFilter[filter.name](filteredAds, filter.value)
@@ -77,7 +81,7 @@
 
     // Фильтрует объявления по каждой выбранной характеристике
     checkedFeatures.forEach(function (feature) {
-      filteredAds = filterByFeatures(filteredAds, feature.value)
+      filteredAds = filterByFeatures([...filteredAds], feature.value)
     })
 
     return filteredAds
