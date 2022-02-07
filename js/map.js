@@ -14,6 +14,7 @@
   let adFormFieldsets = adFormAnnoucement.querySelectorAll("fieldset")
   let addressInput = adFormAnnoucement.querySelector("#address")
   let mapFiltersContainer = map.querySelector(".map__filters-container")
+  const numberRenderPins = 15
   const pinWidth = 50
   const pinHeight = 70
   const valueTypes = {
@@ -216,14 +217,15 @@
   }
 
   function createMapElements(arr) {
+    let newArr = arr.slice(0, numberRenderPins)
     //создает метки объявлений на карте
-    createFragment(arr)
+    createFragment(newArr)
 
     //ищет созданные метки объявлений, кроме перетаскивающейся метки
     findCreateMapPins = map.querySelectorAll(".map__pin:not(.map__pin--main)")
 
     //создает попапы объявлений о сдаче при клике по соответствующей метке на карте
-    createMapPinAnnoucements(arr)
+    createMapPinAnnoucements(newArr)
 
     //ищет созданные попапы объявлений о сдаче
     mapCards = map.querySelectorAll(".map__card")
